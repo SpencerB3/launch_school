@@ -1,28 +1,34 @@
-# def count_occurrences(auto)
-#   hash = {}
-#   auto.each do |key|
-#     if hash[key] == nil
-#       hash[key] = 1
+# Write a method that counts the number of occurrences of each element in a given array.
+
+# def count_occurrences(autos)
+#   list = {}
+#   autos.each do |auto|
+#     if list[auto] == nil
+#       list[auto] = 1
 #     else
-#       hash[key] += 1
+#       list[auto] += 1
 #     end
 #   end
-#   puts hash
+#   puts list
 # end
 
-def count_occurrences(array)
-  occurrences = {}
-
-  array.each do |ele|
-    if occurrences.has_key?(ele) == false
-      occurrences[ele] = 1
-    else 
-      occurrences[ele] += 1
-    end
+def count_occurrences(autos)
+  list = {}
+  autos.each do |element|
+    list[element] = autos.count(element)
   end
-  puts occurrences
+  list.each do |k, v|
+    puts "#{k} => #{v}"
+  end
+
 end
 
+vehicles = [
+  'car', 'car', 'truck', 'car', 'SUV', 'truck',
+  'motorcycle', 'motorcycle', 'car', 'truck'
+]
+
+count_occurrences(vehicles)
 
 vehicles = [
   'car', 'car', 'truck', 'car', 'SUV', 'truck',

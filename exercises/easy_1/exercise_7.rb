@@ -1,27 +1,23 @@
-# def stringy(number)
-#   string = ""
-#   number.times do |x|
-#     if x % 2 == 0
-#       string << "1"
-#     else 
-#       string << "0"
-#     end
-#   end
+# Write a method that takes one argument, a positive integer, and returns a string of alternating 1s and 0s, always starting with 1. The length of the string should match the given integer.
 
-#   return string
-# end
-
-def stringy(length)
+def stringy(number)
   string = ""
-  length.times do |i|
-    number = i % 2 == 0 ? "1" : "0"
+  number.times do |i|
+    number = i % 2 == 0 ? '1' : '0'
     string << number
   end
-  return string
+  string
+
+  # end
+  # number.times do |i|
+  #   if i.even?
+  #     string += '1'
+  #   else
+  #     string += '0'
+  #   end
+  # end
+  # return string
 end
-
-
-puts stringy(6)
 
 puts stringy(6) == '101010'
 puts stringy(9) == '101010101'

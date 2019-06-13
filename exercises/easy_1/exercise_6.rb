@@ -1,5 +1,4 @@
-# same as last problem, but this time leave alone words 4 characters and under
-# iterate through split string, if element is longer than 4 chars, reverse it
+# Write a method that takes one argument, a string containing one or more words, and returns the given string with all five or more letter words reversed. Each string will consist of only letters and spaces. Spaces should be included only when more than one word is present.
 
 # def reverse_words(string)
 #   new_array = string.split.map do |ele|

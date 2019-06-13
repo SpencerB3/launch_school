@@ -1,5 +1,6 @@
-# def reverse_sentence(string)
+# Write a method that takes one argument, a string, and returns a new string with the words in reverse order.
 
+# def reverse_sentence(string)
 #   return string.split.reverse.join(" ")
 # end
 
