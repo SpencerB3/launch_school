@@ -1,3 +1,5 @@
+# What will each of the 4 puts statements print?
+
 require 'date'
 
 puts Date.new

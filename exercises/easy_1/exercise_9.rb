@@ -1,9 +1,14 @@
+# Write a method that takes one argument, a positive integer, and returns the sum of its digits.
+
 def sum(number)
-  result = 0
-  new_number = number.to_s.chars
-  new_number.each {|num| result += num.to_i}
-  return result
+  # sum = 0
+  # number_array = number.to_s.split("")
+  # number_sum = number_array.inject {|num, sum| sum.to_i + num.to_i}
+  # number_sum
+  number.digits.sum
 end
+
+puts sum(23)
 
 puts sum(23) == 5
 puts sum(496) == 19

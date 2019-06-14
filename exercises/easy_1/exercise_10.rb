@@ -1,7 +1,12 @@
-def calculate_bonus(salary, good_job)
-  
-  bonus = good_job ? (salary/2) : 0
-  
+# Write a method that takes two arguments, a positive integer and a boolean, and calculates the bonus for a given salary. If the boolean is true, the bonus should be half of the salary. If the boolean is false, the bonus should be 0.
+
+def calculate_bonus(salary, bonus)
+  bonus ? salary /2 : 0
+  # if bonus
+  #   salary / 2
+  # else
+  #   0
+  # end
 end
 
 puts calculate_bonus(2800, true) == 1400

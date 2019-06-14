@@ -1,5 +1,6 @@
-a = %w(a b c d e)
+# What do each of these puts statements output?
 
+a = %w(a b c d e)
 
 puts a.fetch(7)
 # IndexError

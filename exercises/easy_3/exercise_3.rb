@@ -1,5 +1,7 @@
-puts "Please write a word or multiple words:"
-statement = gets.chomp
-# puts "There are #{statement.gsub(" ", "").length} characters in the word \"#{statement}\"."
-puts "There are #{statement.delete(" ").length} characters in the word \"#{statement}\"."
+# Write a program that will ask a user for an input of a word or multiple words and give back the number of characters. Spaces should not be counted as a character.
 
+puts "Please write word or multiple words:"
+word = gets.chomp
+word = word.delete(' ')
+
+puts "There are #{word.length} characters in \"#{word}\"."

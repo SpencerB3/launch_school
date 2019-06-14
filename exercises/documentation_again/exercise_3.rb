@@ -1,3 +1,5 @@
+# Use the ruby documentation to determine what this code will print.
+
 # https://docs.ruby-lang.org/en/2.6.0/syntax/calling_methods_rdoc.html#label-Default+Positional+Arguments
 
 # When the method defines default arguments you do not need to supply all the arguments to the method. 
