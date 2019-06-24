@@ -4,9 +4,9 @@
 
 def leap_year?(year)
   if year % 400 == 0
-    return true
+    true
   elsif year % 100 == 0
-    return false
+    false
   else
     year % 4 == 0
   end

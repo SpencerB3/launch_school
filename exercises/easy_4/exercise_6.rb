@@ -1,9 +1,18 @@
 # Write a method that takes an Array of numbers, and returns an Array with the same number of elements, and each element has the running total from the original Array.
 
 def running_total(array)
-
   sum = 0
   array.map {|value| sum += value}
+
+  # return array if array == []
+  # new_total = [array[0]]
+  # array.each.with_index do |num, i|
+
+  #   if i != array.length - 1
+  #     new_total << new_total[i] + array[i + 1]
+  #   end
+  # end
+  # new_total
 
 end
 
