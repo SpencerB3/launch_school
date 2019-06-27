@@ -2,18 +2,15 @@
 
 def running_total(array)
   sum = 0
-  array.map {|value| sum += value}
-
+  array.map { |value| sum += value }
   # return array if array == []
   # new_total = [array[0]]
   # array.each.with_index do |num, i|
-
   #   if i != array.length - 1
   #     new_total << new_total[i] + array[i + 1]
   #   end
   # end
   # new_total
-
 end
 
 p running_total([2, 5, 13])
