@@ -1,8 +1,10 @@
+# Write a method that takes an Array of Integers between 0 and 19, and returns an Array of those Integers sorted based on the English words for each number:
+
 NUMBER_WORDS = %w(zero one two three four
                   five six seven eight nine
                   ten eleven twelve thirteen fourteen
                   fifteen sixteen seventeen eighteen nineteen)
-
+p NUMBER_WORDS[0]
 def alphabetic_number_sort(range)
   range.sort_by { |numbers| NUMBER_WORDS[numbers]}
 end

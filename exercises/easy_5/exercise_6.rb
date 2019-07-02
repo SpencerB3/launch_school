@@ -1,3 +1,5 @@
+# Write a method that takes a string with one or more space separated words and returns a hash that shows the number of words of different sizes.
+
 def word_sizes(words)
   # word_size_hash = {}
   word_size = Hash.new(0)
