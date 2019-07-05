@@ -3,6 +3,7 @@
 def print_in_box(banner)
   horizontal_rule = "+#{'-' * (banner.length + 2)}+"
   empty_line = "|#{' ' * (banner.length + 2)}|"
+  
   puts horizontal_rule
   puts empty_line
   puts "| #{banner} |"
