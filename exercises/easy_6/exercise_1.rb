@@ -10,7 +10,7 @@ def dms(degrees_float)
   degrees, remaining_seconds = total_seconds.divmod(SECONDS_PER_DEGREE)
   minutes, seconds = remaining_seconds.divmod(SECONDS_PER_MINUTE)
   degrees %= 360
-  puts format(%(#{degrees}#{DEGREE}%02d',%02d"), minutes, seconds)
+  format(%(#{degrees}#{DEGREE}%02d'%02d"), minutes, seconds)
 end
 
 dms(30) == %(30°00'00")
