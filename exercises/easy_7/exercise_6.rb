@@ -15,7 +15,7 @@ def staggered_case(string)
       result += char
     end
   end
-  p result
+  result
 end
 
 staggered_case('I Love Launch School!') == 'I lOvE lAuNcH sChOoL!'

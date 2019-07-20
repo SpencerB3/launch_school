@@ -12,7 +12,7 @@ def staggered_case(string)
       end
       need_upper = !need_upper
     end
-    p staggered_string
+    staggered_string
 
   # string.each_char.with_index do |char, index|
   #   if index.odd?

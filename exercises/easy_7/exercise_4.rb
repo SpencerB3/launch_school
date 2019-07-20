@@ -2,11 +2,8 @@
 
 # You may not use String#swapcase; write your own version of this method.
 
-UPPERCASE = ('A'..'Z').to_a
-DOWNCASE = ('a'..'z').to_a
-
 def swapcase(string)
-  characters = string.split.map do |char|
+  characters = string.split('').map do |char|
     if char =~ /[A-Z]/
       char.downcase
     elsif char =~ /[a-z]/

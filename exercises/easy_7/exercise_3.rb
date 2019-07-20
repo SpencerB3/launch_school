@@ -4,11 +4,12 @@
 
 def word_cap(string)
   words_array = string.split.map(&:capitalize)
-  puts words_array.join(' ')
-
-  # string.split
-  #       .map { |word| word[0].upcase + word[1..-1].downcase }
-  #       .join(' ')
+  words_array.join(' ')
+  # result = []
+  # string.split.each do |word|
+  #   result << word.capitalize
+  # end
+  # result.join(' ')
 end
 
 word_cap('four score and seven') == 'Four Score And Seven'
