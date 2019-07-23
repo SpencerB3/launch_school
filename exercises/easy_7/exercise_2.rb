@@ -15,7 +15,7 @@ def letter_case_count(string)
       case_count[:neither] += 1
     end
   end
-  p case_count
+  case_count
 end
 
 letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }
