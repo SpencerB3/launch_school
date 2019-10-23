@@ -2,18 +2,17 @@
 
 # Write a method that returns 2 times the number provided as an argument, unless the argument is a double number; double numbers should be returned as-is.
 
-def twice(number)
   string_number = number.to_s
-  center = string_number.size / 2
-  left_side = string_number[0..(center - 1)]
-  right_side = string_number[center..-1]
-  if string_number.size.odd?
-    p number * 2
-  elsif string_number.size.even? && left_side == right_side
-    p number
+  if is_double?(string_number)
+    number
   else
-    p number * 2
+    number * 2
   end
+end
+
+def double?(string)
+  center = string.size / 2
+  string.size.even? && string[0..(center - 1)] == string[center..-1]
 end
 
 twice(37) == 74

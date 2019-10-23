@@ -1,0 +1,36 @@
+en:  
+  welcome: "Welcome to Calculator! Enter your name:"
+  name_greeting: "Hi, #{name}!"
+  invalid_name: "Make sure you enter a valid name"
+  first_number: "What's the first number?"
+  second_number: "What's the second number?"
+  invalid_number: "Hmm... that doesn't look like a valid number"
+  operator_request: "What operation would you like to perform?
+      1) add
+      2) subtraction
+      3) multiplication
+      4) division"
+  invalid_operator: "Must choose 1, 2, 3, or 4"
+  # operation_status: '#{operation_to_message(operator)} the two numbers...'
+  # result: 'The result is #{result}'
+  another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
+  good_bye: "Thank you for using the calculator. Good-bye!"
+
+es:
+  welcome: "Bienvenido a la calculadora! Entre su nombre:"
+  # name_greeting: "Hi, #{name}!"
+  invalid_name: "Asegúrese de entrar un nombre válido."
+  first_number: "What's the first number?"
+  second_number: "What's the second number?"
+  invalid_number: "Hmm... that doesn't look like a valid number"
+  operator_request: "What operation would you like to perform?
+      1) add
+      2) subtraction
+      3) multiplication
+      4) division"
+  invalid_operator: "Must choose 1, 2, 3, or 4"
+  # operation_status: '#{operation_to_message(operator)} the two numbers...'
+  # result: 'The result is #{result}'
+  another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
+  good_bye: "Thank you for using the calculator. Good-bye!"
+

@@ -1,3 +1,11 @@
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'en'
+
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -19,13 +27,13 @@ def operation_to_message(op)
   end
 end
 
-prompt("Welcome to Calculator! Enter your name:")
+prompt(messages('welcome'))
 
 name = ""
 loop do
   name = Kernel.gets().chomp()
   if name.empty?()
-    prompt("Make sure you enter a valid name")
+    prompt(messages('invalid_name'))
   else
     break
   end
@@ -36,36 +44,28 @@ prompt("Hi, #{name}!")
 loop do
   number1 = nil
   loop do
-    prompt("What's the first number?")
+    prompt(messages('first_number'))
     number1 = Kernel.gets().chomp()
 
     if valid_number?(number1)
       break
     else
-      prompt("Hmm... that doesn't look like a valid number")
+      prompt(messages('invalid_number'))
     end
   end
   number2 = nil
   loop do
-    prompt("What's the second number?")
+    prompt(messages('second_number'))
     number2 = Kernel.gets().chomp()
 
     if valid_number?(number2)
       break
     else
-      prompt("Hmm...that doesn't look like a valid number")
+      prompt('invalid_number')
     end
   end
 
-  operator_prompt = <<-MSG
-    What operation would you like to perform?
-    1) add
-    2) subtraction
-    3) multiplication
-    4) division
-    MSG
-
-  prompt(operator_prompt)
+  prompt(messages('operator_request'))
   operator = ''
   loop do
     operator = Kernel.gets().chomp()
@@ -73,7 +73,7 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt("Must choose 1, 2, 3, or 4")
+      prompt('invalid_operator')
     end
   end
 
@@ -92,9 +92,9 @@ loop do
 
   prompt("The result is #{result}")
 
-  prompt("Do you want another calculation? (Y to calculate again)")
+  prompt(messages('another_calculation'))
   answer = Kernel.gets().chomp()
   break unless answer.downcase.start_with?('y')
 end
 
-prompt("Thank you for using the calculator. Good-bye!")
+prompt("good_bye, #{name}")
