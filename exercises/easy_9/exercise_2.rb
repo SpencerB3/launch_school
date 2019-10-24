@@ -2,17 +2,16 @@
 
 # Write a method that returns 2 times the number provided as an argument, unless the argument is a double number; double numbers should be returned as-is.
 
-  string_number = number.to_s
-  if is_double?(string_number)
-    number
-  else
-    number * 2
-  end
+def twice(num)
+  num.size.even? && double?(num)? num : num * 2
 end
 
-def double?(string)
-  center = string.size / 2
-  string.size.even? && string[0..(center - 1)] == string[center..-1]
+def double?(num)
+  number_string = num.to_s
+  middle = number_string.size / 2
+  left_side = middle.zero? ? '' : number_string[0..(middle - 1)]
+  right_side = number_string[middle..-1]
+  left_side == right_side
 end
 
 twice(37) == 74
@@ -25,4 +24,3 @@ twice(3333) == 3333
 twice(7676) == 7676
 twice(123_456_789_123_456_789) == 123_456_789_123_456_789
 twice(5) == 10
-
