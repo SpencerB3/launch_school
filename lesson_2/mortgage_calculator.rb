@@ -1,18 +1,20 @@
+require 'yaml'
+MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
+
 def prompt(message)
   puts("=> #{message}")
 end
 
 loop do
-  prompt("Welcome to Mortgage Calculator")
-  prompt("------------------------------")
+  prompt(MESSAGES['greeting'])
 
-  prompt("What is the loan amount?")
+  prompt(MESSAGES['loan_amount'])
 
   amount = ''
   loop do
     amount = gets.chomp
     if amount.empty?() || amount.to_f() < 0
-      prompt("Must enter a positive number.")
+      prompt(MESSAGES['validate_number'])
     else
       break
     end
@@ -24,7 +26,7 @@ loop do
     prompt("Example: 5 for 5% or 2.5 for 2.5%")
     interest_rate = gets.chomp
     if interest_rate.empty? || interest_rate.to_f < 0
-      prompt("Please enter a positive number.")
+      prompt(MESSAGES['validate_number'])
     else
       break
     end
@@ -36,7 +38,7 @@ loop do
     prompt("What is the loan duration (in years)?")
     years = gets.chomp
     if years.empty?() || years.to_i < 0
-      prompt("Please enter a valid number.")
+      prompt(MESSAGES['validate_number'])
     else
       break
     end
@@ -54,10 +56,9 @@ loop do
 
   prompt("Your monthly payment is: $#{format('%02.2f', monthly_payment)}")
 
-  prompt("Another calculation?")
+  prompt(MESSAGES['calculation'])
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
 end
 
-prompt("Thank you for using calculator!")
-prompt("Goodbye")
+prompt(MESSAGES['thank_you'])

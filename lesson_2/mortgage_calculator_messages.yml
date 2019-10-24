@@ -1,0 +1,5 @@
+greeting: "Welcome to Mortgage Calculator!"
+loan_amount: "What is the loan amount? Example 500 for $500, 1000 for $1000"
+validate_number: "Must enter a positive number."
+calculation: "Would you like to do another loan calculation?"
+thank_you: "Thank you for using Loan Calculator!"
