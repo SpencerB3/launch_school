@@ -1,6 +1,10 @@
 require 'yaml'
 MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
+def clear_screen
+  system('clear') || system('cls')
+end
+
 def prompt(message)
   puts("=> #{message}")
 end
@@ -59,6 +63,8 @@ loop do
   prompt(MESSAGES['calculation'])
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
+
+  clear_screen
 end
 
 prompt(MESSAGES['thank_you'])
