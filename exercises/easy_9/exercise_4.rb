@@ -3,7 +3,8 @@
 # You may assume that the argument will always be a valid integer that is greater than 0.
 
 def sequence(num)
-  (1..num).to_a
+  return [0] if num == 0
+  num > 0 ? (1..num).to_a : (num..0)
 end
 
 sequence(5) == [1, 2, 3, 4, 5]

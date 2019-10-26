@@ -3,15 +3,15 @@
 # Write a method that returns 2 times the number provided as an argument, unless the argument is a double number; double numbers should be returned as-is.
 
 def twice(num)
-  num.size.even? && double?(num)? num : num * 2
+  double?(num)? num : num * 2
 end
 
 def double?(num)
-  number_string = num.to_s
-  middle = number_string.size / 2
-  left_side = middle.zero? ? '' : number_string[0..(middle - 1)]
-  right_side = number_string[middle..-1]
-  left_side == right_side
+  num_string = num.to_s
+  center = num_string.size / 2
+  left_side = num_string[0...center]
+  right_side = num_string[center..-1]
+  num_string.size.even? && (left_side == right_side)
 end
 
 twice(37) == 74
