@@ -4,8 +4,8 @@
 # => Hello, John Q Doe! Nice to have a Master Plumber around.
 
 def greetings(name, profession)
-  puts "=> Hello, #{name.join(' ')}! +
-        Nice to have a #{profession[:title]} #{profession[:occupation]} around."
+  puts "=> Hello, #{name.join(' ')}! " \
+        "Nice to have a #{profession[:title]} #{profession[:occupation]} around."
 end
 
 greetings(%w(John Q Doe), title: 'Master', occupation: 'Plumber')
