@@ -6,12 +6,48 @@ def messages(message, lang='en')
   MESSAGES[lang][message]
 end
 
+def clear
+  system('clear') || system('cls')
+end
+
 def prompt(message)
-  Kernel.puts("=> #{message}")
+  puts("\n=> #{message}\n\n")
+end
+
+def retrieve_language
+  prompt(messages('language'))
+  gets.chomp
+end
+
+def valid_language?(lang)
+  lang == 'en' || lang == 'es'
+end
+
+def retrieve_name
+  prompt(messages('name'))
+  gets.chomp
+end
+
+def valid_name?(name)
+  !name.empty? && !name.strip.size.zero?
+end
+
+def greeting(name)
+  puts format(messages('name_greeting'), name: name)
+end
+
+def retrieve_number(first_or_second)
+  puts format(messages('number'), pick_number: first_or_second )
+  gets.chomp
 end
 
 def valid_number?(num)
-  num.to_i.to_s == num
+  num.to_i.to_s == num || num.to_f.to_s == num
+end
+
+def retrieve_operator
+  prompt(messages('operator_request'))
+  gets.chomp
 end
 
 def operation_to_message(op)
@@ -27,50 +63,62 @@ def operation_to_message(op)
   end
 end
 
-prompt(messages('welcome'))
+def display_result(result)
+  puts format(messages('result'), result: result)
+end
 
-name = ""
+def continue?
+  prompt(messages('another_calculation'))
+  answer = gets.chomp.downcase
+  return true if answer == 'y' || answer == 'yes'
+end
+
+name = nil
+number1 = nil
+number2 = nil
+operator = nil
+language = nil
+
+# --------------MAIN CODE-----------------
+
+clear
+prompt(messages('welcome'))
 loop do
-  name = Kernel.gets().chomp()
-  if name.empty?()
-    prompt(messages('invalid_name'))
-  else
+  language = retrieve_language
+  break if valid_language?(language)
+  prompt(messages('invalid_language'))
+end
+
+loop do
+  name = retrieve_name
+  if valid_name?(name)
+    greeting(name)
     break
+  else
+    prompt(messages('invalid_name'))
   end
 end
 
-prompt("Hi, #{name}!")
-
 loop do
-  number1 = nil
-  loop do
-    prompt(messages('first_number'))
-    number1 = Kernel.gets().chomp()
 
-    if valid_number?(number1)
-      break
-    else
-      prompt(messages('invalid_number'))
-    end
-  end
-  number2 = nil
   loop do
-    prompt(messages('second_number'))
-    number2 = Kernel.gets().chomp()
-
-    if valid_number?(number2)
-      break
-    else
-      prompt('invalid_number')
-    end
+    number1 = retrieve_number('first')
+    break if valid_number?(number1)
+    prompt(messages('invalid_number'))
   end
 
-  prompt(messages('operator_request'))
-  operator = ''
   loop do
-    operator = Kernel.gets().chomp()
-
-    if %w(1 2 3 4).include?(operator)
+    number2 = retrieve_number('second')
+    break if valid_number?(number2)
+    prompt('invalid_number')
+  end
+  
+  loop do
+    operator = retrieve_operator
+    if operator == '4' && number2 == '0'
+      prompt(messages('invalid_division'))
+      next
+    elsif %w(1 2 3 4).include?(operator)
       break
     else
       prompt('invalid_operator')
@@ -90,11 +138,16 @@ loop do
              number1.to_f() / number2.to_f()
            end
 
-  prompt("The result is #{result}")
 
-  prompt(messages('another_calculation'))
-  answer = Kernel.gets().chomp()
-  break unless answer.downcase.start_with?('y')
+  display_result(result)
+
+  if continue?
+    clear
+  else
+    break
+  end
 end
 
-prompt("good_bye, #{name}")
+prompt("Thank you for using Calculator, #{name}.  Good-bye!")
+sleep(4)
+clear

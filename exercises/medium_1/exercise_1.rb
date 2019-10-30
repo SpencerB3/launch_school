@@ -3,7 +3,7 @@
 # Do not use the method Array#rotate or Array#rotate! for your implementation.
 
 def rotate_array(array)
-  array.empty? ? array : array[1..-1] + array[0]
+  array.empty? ? array : array[1..-1] << array[0]
   # array.empty? ? array : array.push(array.shift)
 end
 

@@ -1,9 +1,11 @@
 en:  
-  welcome: "Welcome to Calculator! Enter your name:"
-  name_greeting: "Hi, #{name}!"
+  welcome: "Welcome! - ¡Bienvenido!"
+  language: "Hello/Hola! - Type 'en' for English - Entra 'es' para espanol"
+  invalid_language: "Invalid selection - Seleccion invalida"
+  name: "Enter your name:"
+  name_greeting: "Hi, %{name}!"
   invalid_name: "Make sure you enter a valid name"
-  first_number: "What's the first number?"
-  second_number: "What's the second number?"
+  number: "What's the %{pick_number} number?"
   invalid_number: "Hmm... that doesn't look like a valid number"
   operator_request: "What operation would you like to perform?
       1) add
@@ -11,8 +13,9 @@ en:
       3) multiplication
       4) division"
   invalid_operator: "Must choose 1, 2, 3, or 4"
+  invalid_division: "Invalid. '0' cannot be a divisor. Choose another operator"
   # operation_status: '#{operation_to_message(operator)} the two numbers...'
-  # result: 'The result is #{result}'
+  result: 'The result is %{result}'
   another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
   good_bye: "Thank you for using the calculator. Good-bye!"
 
