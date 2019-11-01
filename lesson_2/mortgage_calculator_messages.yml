@@ -1,5 +1,10 @@
-greeting: "Welcome to Mortgage Calculator!"
-loan_amount: "What is the loan amount? Example 500 for $500, 1000 for $1000"
-validate_number: "Must enter a positive number."
-calculation: "Would you like to do another loan calculation?"
-thank_you: "Thank you for using Loan Calculator!"
+welcome: "Welcome to Loan Calculator!"
+loan_amount: "Please enter your loan amount. \nEnter '100' for $100, '50' for $50"
+invalid_entry: "Please enter a positive number"
+interest_rate: "Please enter your interest rate. 
+Enter '5' for 5%, '10' for ten percent"
+loan_duration: "Please enter loan duration in years"
+monthly_dues: 'Your monthly payment is $%{amount}'
+another_calculation: "Another calculation? Type 'Y' to continue, 'N' to discontinue"
+answer_invalid: "Please enter 'Y' or 'N' only"
+good_bye: "Thank you for using Loan Calculator!"

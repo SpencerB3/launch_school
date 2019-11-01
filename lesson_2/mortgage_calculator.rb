@@ -1,70 +1,100 @@
 require 'yaml'
-MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
+MESSAGES = YAML.load_file('mortgage__calculator_messages.yml')
 
-def clear_screen
+def prompt(message)
+  puts "#{message}\n"
+end
+
+def clear
   system('clear') || system('cls')
 end
 
-def prompt(message)
-  puts("=> #{message}")
-end
-
-loop do
-  prompt(MESSAGES['greeting'])
-
-  prompt(MESSAGES['loan_amount'])
-
-  amount = ''
+def retrieve_amount
   loop do
+    prompt(MESSAGES['loan_amount'])
     amount = gets.chomp
-    if amount.empty?() || amount.to_f() < 0
-      prompt(MESSAGES['validate_number'])
+    if amount.empty? || amount.to_f <= 0
+      prompt(MESSAGES['invalid_entry'])
     else
+      return amount
       break
     end
   end
-
-  interest_rate = ''
-  loop do
-    prompt("Please enter your interest rate.")
-    prompt("Example: 5 for 5% or 2.5 for 2.5%")
-    interest_rate = gets.chomp
-    if interest_rate.empty? || interest_rate.to_f < 0
-      prompt(MESSAGES['validate_number'])
-    else
-      break
-    end
-  end
-
-  years = ''
-
-  loop do
-    prompt("What is the loan duration (in years)?")
-    years = gets.chomp
-    if years.empty?() || years.to_i < 0
-      prompt(MESSAGES['validate_number'])
-    else
-      break
-    end
-  end
-
-  annual_interest_rate = interest_rate.to_f / 100
-
-  monthly_interest_rate = annual_interest_rate / 12
-
-  months = years.to_i() * 12
-
-  monthly_payment = amount.to_f() *
-                    (monthly_interest_rate /
-                    (1 - (1 + monthly_interest_rate)**(-months)))
-
-  prompt("Your monthly payment is: $#{format('%02.2f', monthly_payment)}")
-
-  prompt(MESSAGES['calculation'])
-  answer = gets.chomp
-  break unless answer.downcase.start_with?("y")
-
-  clear_screen
 end
 
-prompt(MESSAGES['thank_you'])
+def retrieve_interest_rate
+  loop do
+    prompt(MESSAGES['interest_rate'])
+    interest_rate = gets.chomp
+    if interest_rate.empty? || interest_rate.to_i <= 0
+      prompt(MESSAGES['invalid_entry'])
+    else
+      return interest_rate
+      break
+    end
+  end
+end
+
+def retrieve_loan_duration
+  loop do
+    prompt(MESSAGES['loan_duration'])
+    years = gets.chomp
+    if years.empty? || years.to_i < 0
+      prompt(MESSAGES['invalid_entry'])
+    else
+      return years
+      break 
+    end
+  end
+end
+
+amount = nil
+interest_rate = nil
+years = nil
+
+clear
+prompt(MESSAGES['welcome'])
+
+# main body
+loop do
+
+  loan_amount = retrieve_amount
+  loan_amount
+
+  clear
+
+  interest_rate = retrieve_interest_rate
+  interest_rate
+
+  clear
+
+  loan_duration = retrieve_loan_duration
+  loan_duration
+
+  clear
+
+  yearly_interest = interest_rate.to_f / 100
+  monthly_interest = yearly_interest / 12
+  months = loan_duration.to_i * 12
+  
+  monthly_payment = loan_amount.to_f * 
+                    (monthly_interest / 
+                    (1 - (1 + monthly_interest)**(-months)))
+
+  monthly_payment = monthly_payment.round(2)
+
+  prompt(format(MESSAGES['monthly_dues'], amount: monthly_payment))
+  prompt(MESSAGES['another_calculation'])
+  answer = gets.downcase.chomp
+
+  until answer == 'y' || answer == 'n'
+    prompt(MESSAGES['answer_invalid'])
+  end
+  break if answer == 'n'
+  clear
+end
+
+clear
+prompt(MESSAGES['good_bye'])
+sleep(3)
+clear
