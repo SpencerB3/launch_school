@@ -1,5 +1,5 @@
 require 'yaml'
-MESSAGES = YAML.load_file('mortgage__calculator_messages.yml')
+MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
 def prompt(message)
   puts "#{message}\n"
@@ -17,7 +17,6 @@ def retrieve_amount
       prompt(MESSAGES['invalid_entry'])
     else
       return amount
-      break
     end
   end
 end
@@ -30,7 +29,6 @@ def retrieve_interest_rate
       prompt(MESSAGES['invalid_entry'])
     else
       return interest_rate
-      break
     end
   end
 end
@@ -43,54 +41,56 @@ def retrieve_loan_duration
       prompt(MESSAGES['invalid_entry'])
     else
       return years
-      break 
     end
   end
 end
 
-amount = nil
-interest_rate = nil
-years = nil
+def retrieve_answer
+  loop do
+    prompt(MESSAGES['yes_no'])
+    answer = gets.chomp
+    if answer == 'y' || answer == 'n'
+      return answer
+    else
+      prompt(MESSAGES['answer_invalid'])
+    end
+  end
+end
 
 clear
 prompt(MESSAGES['welcome'])
+sleep(2)
+clear
 
-# main body
+# --------------MAIN BODY-----------------------
 loop do
-
   loan_amount = retrieve_amount
-  loan_amount
-
   clear
 
   interest_rate = retrieve_interest_rate
-  interest_rate
-
   clear
 
   loan_duration = retrieve_loan_duration
-  loan_duration
-
   clear
 
   yearly_interest = interest_rate.to_f / 100
   monthly_interest = yearly_interest / 12
+
   months = loan_duration.to_i * 12
-  
-  monthly_payment = loan_amount.to_f * 
-                    (monthly_interest / 
+
+  monthly_payment = loan_amount.to_f *
+                    (monthly_interest /
                     (1 - (1 + monthly_interest)**(-months)))
 
   monthly_payment = monthly_payment.round(2)
 
   prompt(format(MESSAGES['monthly_dues'], amount: monthly_payment))
-  prompt(MESSAGES['another_calculation'])
-  answer = gets.downcase.chomp
 
-  until answer == 'y' || answer == 'n'
-    prompt(MESSAGES['answer_invalid'])
-  end
-  break if answer == 'n'
+  prompt(MESSAGES['another_calculation'])
+
+  answer = retrieve_answer
+  break if answer.downcase == 'n'
+
   clear
 end
 

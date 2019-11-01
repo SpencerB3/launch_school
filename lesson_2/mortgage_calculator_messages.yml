@@ -5,6 +5,7 @@ interest_rate: "Please enter your interest rate.
 Enter '5' for 5%, '10' for ten percent"
 loan_duration: "Please enter loan duration in years"
 monthly_dues: 'Your monthly payment is $%{amount}'
-another_calculation: "Another calculation? Type 'Y' to continue, 'N' to discontinue"
+another_calculation: "Another calculation?" 
+yes_no: "Type 'Y' to continue, 'N' to discontinue"
 answer_invalid: "Please enter 'Y' or 'N' only"
 good_bye: "Thank you for using Loan Calculator!"
