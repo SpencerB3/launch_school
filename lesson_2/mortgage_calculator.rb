@@ -46,7 +46,7 @@ def retrieve_loan_duration
 end
 
 def get_monthly_payment(loan_amount, monthly_interest, months)
-  loan_amount.to_f * (monthly_interest / 
+  loan_amount.to_f * (monthly_interest /
                      (1 - (1 + monthly_interest)**(-months)))
 end
 
