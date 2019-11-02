@@ -37,7 +37,7 @@ def retrieve_loan_duration
   loop do
     prompt(MESSAGES['loan_duration'])
     years = gets.chomp
-    if years.empty? || years.to_i < 0
+    if years.empty? || years.to_i < 0 || years.to_i == 0
       prompt(MESSAGES['invalid_entry'])
     else
       return years
@@ -45,16 +45,22 @@ def retrieve_loan_duration
   end
 end
 
-def retrieve_answer
+def get_monthly_payment(loan_amount, monthly_interest, months)
+  loan_amount.to_f * (monthly_interest / 
+                     (1 - (1 + monthly_interest)**(-months)))
+end
+
+def another_calculation?
+  answer = ''
+
   loop do
     prompt(MESSAGES['yes_no'])
-    answer = gets.chomp
-    if answer == 'y' || answer == 'n'
-      return answer
-    else
-      prompt(MESSAGES['answer_invalid'])
-    end
+    answer = gets.downcase.chomp
+    break if answer == 'y' || answer == 'n'
+    prompt(MESSAGES['answer_invalid'])
   end
+
+  answer == 'y'
 end
 
 clear
@@ -78,9 +84,7 @@ loop do
 
   months = loan_duration.to_i * 12
 
-  monthly_payment = loan_amount.to_f *
-                    (monthly_interest /
-                    (1 - (1 + monthly_interest)**(-months)))
+  monthly_payment = get_monthly_payment(loan_amount, monthly_interest, months)
 
   monthly_payment = monthly_payment.round(2)
 
@@ -88,8 +92,7 @@ loop do
 
   prompt(MESSAGES['another_calculation'])
 
-  answer = retrieve_answer
-  break if answer.downcase == 'n'
+  break unless another_calculation?
 
   clear
 end
