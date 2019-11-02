@@ -1,8 +1,7 @@
 # Write a method that takes one argument, a positive integer, and returns a list of the digits in the number.
 
 def digit_list(number)
-  numbers_string = number.to_s.split("")
-  numbers_string.map {|num| num.to_i}
+  number.to_s.split("").map { |num| num.to_i }
   # --------
   # numbers = []
   # loop do
@@ -12,7 +11,6 @@ def digit_list(number)
   # end
   # numbers
 end
-p digit_list(12345)
 
 puts digit_list(12345) == [1, 2, 3, 4, 5]     # => true
 puts digit_list(7) == [7]                     # => true

@@ -2,7 +2,7 @@
 
 def is_odd?(number)
   number % 2 == 1
-  # return number.odd?
+  # number.odd?
 end
 
 puts is_odd?(2)    # => false
