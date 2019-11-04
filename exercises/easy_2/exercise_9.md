@@ -14,6 +14,5 @@ BOB
 BOB
 ```
 
-The upcase! method is a destructive method that will modify the reference in memory 
-thus affecting the original object to which the two varibles 'name' aand 'save_name' 
-point towards.
+The upcase! method is a destructive method that will modify the string referenced by 'name'
+which is the same object referenced by 'save_name'
