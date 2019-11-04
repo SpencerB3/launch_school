@@ -9,4 +9,3 @@ if name[-1] == '!'
 else
   puts "Hello #{name}."
 end
-

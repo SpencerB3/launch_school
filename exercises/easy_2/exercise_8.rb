@@ -11,7 +11,7 @@ answer = nil
 loop do
   puts ">> Enter 's' to compute the sum, 'p' to compute the product."
   answer = gets.chomp.downcase
-  break if answer != 's' || answer != 'p'
+  break if answer == 's' || answer == 'p'
   puts "Invalid entry."
 end
 
