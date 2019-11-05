@@ -20,10 +20,12 @@ def display_results(player, computer)
   end
 end
 
+# ------------- MAIN BODY -----------
+
 loop do
   choice = nil
   loop do
-    prompt('Choose one: #{VALID_CHOICES.join(', ')}')
+    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
     choice = gets.chomp
     break if VALID_CHOICES.include?(choice)
     prompt("That's not a valid choice.")
