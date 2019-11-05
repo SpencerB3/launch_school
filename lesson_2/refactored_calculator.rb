@@ -1,12 +1,10 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
-OPERATIONS {
-            'addition' => '1',
-            'subtraction' => '2',
-            'multipliication' => '3',
-            'division' => '4'
-}
+OPERATIONS = { 'addition' => '1',
+               'subtraction' => '2',
+               'multiplication' => '3',
+               'division' => '4' }
 
 def messages(message, lang='en')
   MESSAGES[lang][message]
@@ -43,7 +41,7 @@ def greeting(name, language)
 end
 
 def retrieve_number(first_or_second, language)
-  puts format(messages('number', language), pick_number: first_or_second )
+  puts format(messages('number', language), pick_number: first_or_second)
   gets.chomp
 end
 
@@ -56,42 +54,27 @@ def retrieve_operator(language)
   gets.chomp
 end
 
-def operation_to_message(operation, language, number1, number2)
+def operation_to_message(operator, language)
   case operator
-  when OPERATIONS['addition']
-    puts format(messages('addition', lang), n1: number1, n2: number2)
-  when OPERATIONS['subtraction']
-    puts format(messages('subtraction', lang), n1: number1, n2: number2)
-  when OPERATIONS['multiplication']
-    puts format(messages('multiplication', lang), n1: number1, n2: number2)
-  when OPERATIONS['division']
-    puts format(messages('division', lang), n1: number1, n2: number2)
-  end
-end
-
-# fix yaml for operation to message method, 'aaddition', etc.
-
-def operation_to_message(op)
-  case op
   when '1'
-    'Adding'
+    puts format(messages('addition', language))
   when '2'
-    'Subtracting'
+    puts format(messages('subtraction', language))
   when '3'
-    'Multiplying'
+    puts format(messages('multiplication', language))
   when '4'
-    'Dividing'
+    puts format(messages('division', language))
   end
 end
 
 def calculation(operator, number1, number2)
   case operator
-    when '1' then number1.to_i() + number2.to_i()
-    when '2' then number1.to_i() - number2.to_i()
-    when '3' then number1.to_i() * number2.to_i()
-    when '4' then number1.to_f() / number2.to_f()
-    end
- end
+  when '1' then number1.to_i() + number2.to_i()
+  when '2' then number1.to_i() - number2.to_i()
+  when '3' then number1.to_i() * number2.to_i()
+  when '4' then number1.to_f() / number2.to_f()
+  end
+end
 
 def display_result(result, language)
   puts format(messages('result', language), result: result)
@@ -137,24 +120,27 @@ loop do
 end
 
 loop do
-
   loop do
-    language == 'en' ? number1 = retrieve_number('first', language) : 
-                       number1 = retrieve_number('primero', language)
+    if language == 'en'
+      number1 = retrieve_number('first', language)
+    elsif language == 'es'
+      number1 = retrieve_number('primero', language)
+    end
     break if valid_number?(number1)
     prompt(messages('invalid_number'))
   end
   clear
 
   loop do
-    language == 'en' ? number2 = retrieve_number('second', language) : 
-                       number2 = retrieve_number('segundo', language)
+    if language == 'en'
+      number2 = retrieve_number('second', language)
+    elsif language == 'es'
+      number2 = retrieve_number('segundo', language)
+    end
     break if valid_number?(number2)
     prompt(messages('invalid_number'))
   end
   clear
-  
-# this where i left off Saturday afternoon - inserting second language, yet to fully go through the Naataalia critique
 
   loop do
     operator = retrieve_operator(language)
@@ -169,7 +155,8 @@ loop do
   end
   clear
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  operation_to_message(operator, language)
+
   sleep(2)
 
   result = calculation(operator, number1, number2)
@@ -184,6 +171,6 @@ loop do
 end
 
 clear
-prompt(messages('good_bye', language))
+prompt(format(messages('good_bye', language), name: name))
 sleep(3)
 clear

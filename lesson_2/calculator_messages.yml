@@ -11,9 +11,13 @@ en:
               \n 1) add \n 2) subtraction \n 3) multiplication \n 4) division" 
   invalid_operator: "Must choose 1, 2, 3, or 4"
   invalid_division: "Invalid. '0' cannot be a divisor. Choose another operator"
-  result: 'The result is %{result}.'
+  addition: "Adding the two numbers..."
+  subtraction: "Subtracting the two numbers..."
+  multiplication: "Multiplying the two numbers..."
+  division: "Dividing the two numbers..."
+  result: "The result is %{result}"
   another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
-  good_bye: "Thank you for using the calculator. Good-bye!"
+  good_bye: "Thank you for using the calculator, %{name}. Good-bye!"
 
 es:
   name: "Entre su nombre"
@@ -24,8 +28,11 @@ es:
   operator_request: "Cual operacion le gustaria hacer?
       \n 1) agregar \n 2) restar \n 3) multiplicar \n 4) dividir"
   invalid_operator: "Por favor, escoja 1, 2, 3, o 4"
-  invalid_division: "Un numero no puede ser divido por 0.  Escoja otro numero"
-  operation_status: '#{operation_to_message(operator)} los dos numeros...'
-  result: 'El resultado es %{result}.'
+  invalid_division: "Un numero no puede ser divido por 0.  Escoja otra operacion"
+  addition: "Agregando los dos numeros..."
+  subtraction: "Restando los dos numeros..."
+  multiplication: "Multiplicando los dos numeros..."
+  division: "Dividiendo los dos numeros..."
+  result: "El resultado es %{result}"
   another_calculation: "Quiere hacer otra calculacion? (Entra 'Y' para hacer otra)"
-  good_bye: "Gracias por haber usado La Calculadora.  Adios!"
+  good_bye: "Gracias por haber usado La Calculadora, %{name}.  Adios!"
