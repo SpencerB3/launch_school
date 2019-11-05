@@ -4,6 +4,5 @@ def multiply(num1, num2)
   num1 * num2
 end
 
-puts multiply(5, 3) == 15
-
-puts multiply([1, 2, 3], 3)
+multiply(5, 3) == 15
+multiply([1, 2, 3], 3) == [1, 2, 3, 1, 2, 3, 1, 2, 3]

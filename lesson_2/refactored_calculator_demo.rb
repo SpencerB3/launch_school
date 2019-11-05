@@ -1,6 +1,13 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
+OPERATIONS {
+            'addition' => '1',
+            'subtraction' => '2',
+            'multipliication' => '3',
+            'division' => '4'
+}
+
 def messages(message, lang='en')
   MESSAGES[lang][message]
 end
@@ -44,10 +51,25 @@ def valid_number?(num)
   num.to_i.to_s == num || num.to_f.to_s == num
 end
 
-def retrieve_operator
+def retrieve_operator(language)
   prompt(messages('operator_request', language))
   gets.chomp
 end
+
+def operation_to_message(operation, language, number1, number2)
+  case operator
+  when OPERATIONS['addition']
+    puts format(messages('addition', lang), n1: number1, n2: number2)
+  when OPERATIONS['subtraction']
+    puts format(messages('subtraction', lang), n1: number1, n2: number2)
+  when OPERATIONS['multiplication']
+    puts format(messages('multiplication', lang), n1: number1, n2: number2)
+  when OPERATIONS['division']
+    puts format(messages('division', lang), n1: number1, n2: number2)
+  end
+end
+
+# fix yaml for operation to message method, 'aaddition', etc.
 
 def operation_to_message(op)
   case op
@@ -62,11 +84,20 @@ def operation_to_message(op)
   end
 end
 
+def calculation(operator, number1, number2)
+  case operator
+    when '1' then number1.to_i() + number2.to_i()
+    when '2' then number1.to_i() - number2.to_i()
+    when '3' then number1.to_i() * number2.to_i()
+    when '4' then number1.to_f() / number2.to_f()
+    end
+ end
+
 def display_result(result, language)
   puts format(messages('result', language), result: result)
 end
 
-def continue?
+def continue?(language)
   prompt(messages('another_calculation', language))
   answer = gets.chomp.downcase
   return true if answer == 'y' || answer == 'yes'
@@ -97,7 +128,7 @@ loop do
   if valid_name?(name)
     clear
     greeting(name, language)
-    sleep(3)
+    sleep(2)
     clear
     break
   else
@@ -123,17 +154,17 @@ loop do
   end
   clear
   
-# this where i left off Saturday afternoon - inserting second languaage, yet to fully go through the Naataalia critique
+# this where i left off Saturday afternoon - inserting second language, yet to fully go through the Naataalia critique
 
   loop do
-    operator = retrieve_operator
+    operator = retrieve_operator(language)
     if operator == '4' && number2 == '0'
-      prompt(messages('invalid_division'))
+      prompt(messages('invalid_division', language))
       next
     elsif %w(1 2 3 4).include?(operator)
       break
     else
-      prompt('invalid_operator')
+      prompt(messages('invalid_operator'))
     end
   end
   clear
@@ -141,21 +172,11 @@ loop do
   prompt("#{operation_to_message(operator)} the two numbers...")
   sleep(2)
 
-  result = case operator
-           when '1'
-             number1.to_i() + number2.to_i()
-           when '2'
-             number1.to_i() - number2.to_i()
-           when '3'
-             number1.to_i() * number2.to_i()
-           when '4'
-             number1.to_f() / number2.to_f()
-           end
+  result = calculation(operator, number1, number2)
 
+  display_result(result, language)
 
-  display_result(result)
-
-  if continue?
+  if continue?(language)
     clear
   else
     break
@@ -163,6 +184,6 @@ loop do
 end
 
 clear
-prompt("Thank you for using Calculator, #{name}.  Good-bye!")
+prompt(messages('good_bye', language))
 sleep(3)
 clear

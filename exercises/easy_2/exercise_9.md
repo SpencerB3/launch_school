@@ -14,5 +14,5 @@ BOB
 BOB
 ```
 
-The upcase! method is a destructive method that will modify the string referenced by 'name'
-which is the same object referenced by 'save_name'
+The upcase! method is a destructive method that will modify the String object 
+referenced by 'name' which is the same String object referenced by 'save_name'

@@ -8,35 +8,24 @@ en:
   number: "What's the %{pick_number} number?"
   invalid_number: "Hmm... that doesn't look like a valid number"
   operator_request: "What operation would you like to perform?
-      1) add
-      2) subtraction
-      3) multiplication
-      4) division"
+              \n 1) add \n 2) subtraction \n 3) multiplication \n 4) division" 
   invalid_operator: "Must choose 1, 2, 3, or 4"
   invalid_division: "Invalid. '0' cannot be a divisor. Choose another operator"
-  # operation_status: '#{operation_to_message(operator)} the two numbers...'
-  result: 'The result is %{result}'
+  result: 'The result is %{result}.'
   another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
   good_bye: "Thank you for using the calculator. Good-bye!"
 
 es:
-  # welcome: "Bienvenido a la calculadora! Entre su nombre:"
-  # name_greeting: "Hi, #{name}!"
-  name: "Escriba su nombre"
+  name: "Entre su nombre"
   name_greeting: "Hola, %{name}!"
   invalid_name: "Asegúrese de entrar un nombre válido."
   number: "Cual es su %{pick_number} numero?"
-  # first_number: "Cual es su primer numero?"
-  # second_number: "What's the second number?"
-  invalid_number: "Hmm... that doesn't look like a valid number"
-  operator_request: "What operation would you like to perform?
-      1) add
-      2) subtraction
-      3) multiplication
-      4) division"
-  invalid_operator: "Must choose 1, 2, 3, or 4"
-  # operation_status: '#{operation_to_message(operator)} the two numbers...'
-  # result: 'The result is #{result}'
-  another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
-  good_bye: "Thank you for using the calculator. Good-bye!"
-
+  invalid_number: "Hmm... no parece que haya entrado un numero valido."
+  operator_request: "Cual operacion le gustaria hacer?
+      \n 1) agregar \n 2) restar \n 3) multiplicar \n 4) dividir"
+  invalid_operator: "Por favor, escoja 1, 2, 3, o 4"
+  invalid_division: "Un numero no puede ser divido por 0.  Escoja otro numero"
+  operation_status: '#{operation_to_message(operator)} los dos numeros...'
+  result: 'El resultado es %{result}.'
+  another_calculation: "Quiere hacer otra calculacion? (Entra 'Y' para hacer otra)"
+  good_bye: "Gracias por haber usado La Calculadora.  Adios!"

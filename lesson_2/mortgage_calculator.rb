@@ -37,7 +37,7 @@ def retrieve_loan_duration
   loop do
     prompt(MESSAGES['loan_duration'])
     years = gets.chomp
-    if years.empty? || years.to_i < 0 || years.to_i == 0
+    if years.empty? || years.to_i < 0 || years.to_i <= 0
       prompt(MESSAGES['invalid_entry'])
     else
       return years
