@@ -1,10 +1,16 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
+VALID_LANGUAGES = ['en', 'es']
+
 OPERATIONS = { 'addition' => '1',
                'subtraction' => '2',
                'multiplication' => '3',
                'division' => '4' }
+
+YES_ANSWERS = ['y', 'yes', 's', 'si']
+
+NO_ANSWERS = ['n', 'no']
 
 def messages(message, lang='en')
   MESSAGES[lang][message]
@@ -24,7 +30,7 @@ def retrieve_language
 end
 
 def valid_language?(lang)
-  lang == 'en' || lang == 'es'
+  VALID_LANGUAGES.include?(lang)
 end
 
 def retrieve_name(language)
@@ -41,7 +47,11 @@ def greeting(name, language)
 end
 
 def retrieve_number(first_or_second, language)
-  puts format(messages('number', language), pick_number: first_or_second)
+  if first_or_second == 'first'
+    puts format(messages('first_number', language))
+  else
+    puts format(messages('second_number', language))
+  end
   gets.chomp
 end
 
@@ -80,10 +90,19 @@ def display_result(result, language)
   puts format(messages('result', language), result: result)
 end
 
-def continue?(language)
-  prompt(messages('another_calculation', language))
-  answer = gets.chomp.downcase
-  return true if answer == 'y' || answer == 'yes'
+def another_calculation?(language)
+  answer = nil
+  loop do
+    prompt(messages('another_calculation', language))
+    answer = gets.chomp.downcase
+    break if YES_ANSWERS.include?(answer) || NO_ANSWERS.include?(answer)
+    prompt(messages('invalid_answer', language))
+  end
+  answer
+end
+
+def continue(answer)
+  YES_ANSWERS.include?(answer) ? true : false
 end
 
 name = nil
@@ -121,24 +140,16 @@ end
 
 loop do
   loop do
-    if language == 'en'
-      number1 = retrieve_number('first', language)
-    elsif language == 'es'
-      number1 = retrieve_number('primero', language)
-    end
+    number1 = retrieve_number('first', language)
     break if valid_number?(number1)
-    prompt(messages('invalid_number'))
+    prompt(messages('invalid_number', language))
   end
   clear
 
   loop do
-    if language == 'en'
-      number2 = retrieve_number('second', language)
-    elsif language == 'es'
-      number2 = retrieve_number('segundo', language)
-    end
+    number2 = retrieve_number('second', language)
     break if valid_number?(number2)
-    prompt(messages('invalid_number'))
+    prompt(messages('invalid_number', language))
   end
   clear
 
@@ -150,7 +161,7 @@ loop do
     elsif %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(messages('invalid_operator'))
+      prompt(messages('invalid_operator', language))
     end
   end
   clear
@@ -163,7 +174,9 @@ loop do
 
   display_result(result, language)
 
-  if continue?(language)
+  answer = another_calculation?(language)
+
+  if continue(answer)
     clear
   else
     break

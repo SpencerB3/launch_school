@@ -5,7 +5,8 @@ en:
   name: "Enter your name:"
   name_greeting: "Hi, %{name}!"
   invalid_name: "Make sure you enter a valid name"
-  number: "What's the %{pick_number} number?"
+  first_number: "Please enter your first number"
+  second_number: "Please enter your second number"
   invalid_number: "Hmm... that doesn't look like a valid number"
   operator_request: "What operation would you like to perform?
               \n 1) add \n 2) subtraction \n 3) multiplication \n 4) division" 
@@ -16,14 +17,17 @@ en:
   multiplication: "Multiplying the two numbers..."
   division: "Dividing the two numbers..."
   result: "The result is %{result}"
-  another_calculation: "Do you want to perform another calculation? (Y to calculate again)"
+  another_calculation: "Do you want to perform another calculation? \
+  (Please enter 'Y' or 'Yes' to calculate again, 'N' or 'No' to exit the program)"
+  invalid_answer: "I did not understand your answer. Let's try again."
   good_bye: "Thank you for using the calculator, %{name}. Good-bye!"
 
 es:
   name: "Entre su nombre"
   name_greeting: "Hola, %{name}!"
   invalid_name: "Asegúrese de entrar un nombre válido."
-  number: "Cual es su %{pick_number} numero?"
+  first_number: "Entre su primero numero"
+  second_number: "Entre su secundo numero"
   invalid_number: "Hmm... no parece que haya entrado un numero valido."
   operator_request: "Cual operacion le gustaria hacer?
       \n 1) agregar \n 2) restar \n 3) multiplicar \n 4) dividir"
@@ -34,5 +38,7 @@ es:
   multiplication: "Multiplicando los dos numeros..."
   division: "Dividiendo los dos numeros..."
   result: "El resultado es %{result}"
-  another_calculation: "Quiere hacer otra calculacion? (Entra 'Y' para hacer otra)"
+  another_calculation: "Quiere hacer otra calculacion? \
+  (Entra 'S' or 'Si' para hacer otra, y 'N' or 'No' para salir del programa)"
+  invalid_answer: "No entendi la respuesta."
   good_bye: "Gracias por haber usado La Calculadora, %{name}.  Adios!"
