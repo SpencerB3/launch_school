@@ -102,7 +102,7 @@ def another_calculation?(language)
 end
 
 def continue(answer)
-  YES_ANSWERS.include?(answer) ? true : false
+  YES_ANSWERS.include?(answer)
 end
 
 name = nil
