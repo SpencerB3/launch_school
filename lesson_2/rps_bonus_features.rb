@@ -1,6 +1,3 @@
-# fix another calculation?
-# go through Juliette code and critique
-
 VALID_CHOICES = { 'r' => 'rock',
                   'p' => 'paper',
                   's' => 'scissors',
@@ -13,7 +10,16 @@ WINNING_HANDS = { 'rock' => %w(scissors lizard),
                   'lizard' => %w(paper spock),
                   'spock' => %w(rock scissors) }
 
+YES_ANSWERS = ['y', 'yes']
+
+NO_ANSWERS = ['n', 'no']
+
 WIN_MATCH = 5
+
+ANOTHER_MATCH = <<-MSG
+  Would you like to start another match against the computer?
+  Please enter 'Y' or 'Yes' to play again, 'N' or 'No' to exit the program
+MSG
 
 def prompt(message)
   puts "=> #{message}"
@@ -41,6 +47,8 @@ def retrieve_user_choice
       return VALID_CHOICES[choice]
     else
       prompt("That's not a valid choice.")
+      sleep(2)
+      clear
     end
   end
 end
@@ -59,6 +67,11 @@ def display_results(user, computer)
   end
 end
 
+def next_round(matches)
+  prompt("Press ENTER to start round #{matches + 1}, 'Q' to quit")
+  gets.chomp.downcase
+end
+
 clear
 prompt("Welcome to Rock-Paper-Scissors-Lizard-Spock!!")
 sleep(2)
@@ -71,6 +84,7 @@ loop do
   computer_wins = 0
   user_wins = 0
   matches_played = 0
+  answer = ''
 
   loop do
     clear
@@ -91,26 +105,39 @@ loop do
     end
 
     prompt("Score: Player: #{user_wins} --- Computer: #{computer_wins}")
+    sleep(1)
 
     if user_wins == WIN_MATCH
-      prompt("You won the match -- Congrats!!")
+      clear
+      prompt("You won the match -- CONGRATS!!")
       sleep(3)
+      clear
       break
     elsif computer_wins == WIN_MATCH
+      clear
       prompt("The Computer has won the match -- Thank you for playing!")
-      sleep(2)
+      sleep(3)
       break
     end
 
-    prompt('Ready for another round?')
-    answer = gets.chomp
-    break unless answer.downcase.start_with?('y') # fix this
+    answer = next_round(matches_played)
+    break if answer == 'q'
+    clear
   end
-  prompt('Would you like to play another round of five against the computer?')
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+
+  loop do
+    clear
+    prompt(ANOTHER_MATCH)
+    answer = gets.chomp.downcase
+    break if YES_ANSWERS.include?(answer) || NO_ANSWERS.include?(answer)
+    prompt("I didn't understand.  Let's try again.")
+    sleep(2)
+  end
+
+  break unless YES_ANSWERS.include?(answer)
 end
+
 clear
-prompt('Thank you for playing! Good bye!')
+prompt('Thank you for playing Rock-Paper-Scissors-Lizard-Spock!')
 sleep(3)
 clear
