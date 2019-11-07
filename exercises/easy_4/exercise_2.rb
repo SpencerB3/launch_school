@@ -20,7 +20,6 @@ def century_suffix(century)
   end
 end
 
-
 century(2000) == '20th'
 century(2001) == '21st'
 century(1965) == '20th'
