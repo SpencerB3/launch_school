@@ -67,6 +67,19 @@ def display_results(user, computer)
   end
 end
 
+def another_match?
+  answer = ''
+  loop do
+    clear
+    prompt(ANOTHER_MATCH)
+    answer = gets.chomp.downcase
+    break if YES_ANSWERS.include?(answer) || NO_ANSWERS.include?(answer)
+    prompt("I didn't understand.  Let's try again.")
+    sleep(2)
+  end
+  answer
+end
+
 def next_round(matches)
   prompt("Press ENTER to start round #{matches + 1}, 'Q' to quit")
   gets.chomp.downcase
@@ -75,7 +88,7 @@ end
 clear
 prompt("Welcome to Rock-Paper-Scissors-Lizard-Spock!!")
 sleep(2)
-prompt("First to win five rounds wins the match!!")
+prompt("First to win 5 rounds wins the match!!")
 sleep(3)
 clear
 
@@ -90,6 +103,7 @@ loop do
     clear
     matches_played += 1
     prompt("Welcome to Round #{matches_played}")
+    prompt("First to win 5 rounds wins the match!!")
 
     user_choice = retrieve_user_choice
     computer_choice = VALID_CHOICES.values.sample
@@ -125,14 +139,7 @@ loop do
     clear
   end
 
-  loop do
-    clear
-    prompt(ANOTHER_MATCH)
-    answer = gets.chomp.downcase
-    break if YES_ANSWERS.include?(answer) || NO_ANSWERS.include?(answer)
-    prompt("I didn't understand.  Let's try again.")
-    sleep(2)
-  end
+  answer = another_match?
 
   break unless YES_ANSWERS.include?(answer)
 end
