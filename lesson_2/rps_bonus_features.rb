@@ -57,16 +57,6 @@ def win?(first, second)
   WINNING_HANDS[first].include?(second)
 end
 
-def display_results(user, computer)
-  if win?(user, computer)
-    prompt('You won!')
-  elsif win?(computer, user)
-    prompt('Computer won!')
-  else
-    prompt("It's a tie!")
-  end
-end
-
 def another_match?
   answer = ''
   loop do
@@ -110,12 +100,14 @@ loop do
 
     prompt("Player chose: #{user_choice} - Computer chose: #{computer_choice}.")
 
-    display_results(user_choice, computer_choice)
-
     if win?(user_choice, computer_choice)
       user_wins += 1
+      prompt('You won!')
     elsif win?(computer_choice, user_choice)
       computer_wins += 1
+      prompt('Computer won!')
+    else
+      prompt("It's a tie!")
     end
 
     prompt("Score: Player: #{user_wins} --- Computer: #{computer_wins}")
@@ -140,7 +132,6 @@ loop do
   end
 
   answer = another_match?
-
   break unless YES_ANSWERS.include?(answer)
 end
 
