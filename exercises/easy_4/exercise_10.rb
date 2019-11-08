@@ -15,13 +15,17 @@ def integer_to_string(number)
 end
 
 def signed_integer_to_string(number)
-  case number <=> 0
-  when -1 then "-#{integer_to_string(-number)}"
-  when +1 then "+#{integer_to_string(number)}"
-  else         integer_to_string(number).to_s
-  end
+  result = integer_to_string(number.abs)
+  return '+' + result if number.positive?
+  return '-' + result if number.negative?
+  result if number.zero?
+  # case number <=> 0
+  # when -1 then "-#{integer_to_string(-number)}"
+  # when +1 then "+#{integer_to_string(number)}"
+  # else         integer_to_string(number).to_s
+  # end
 end
 
-p signed_integer_to_string(4321) == '+4321'
-p signed_integer_to_string(-123) == '-123'
-p signed_integer_to_string(0) == '0'
+signed_integer_to_string(4321) == '+4321'
+signed_integer_to_string(-123) == '-123'
+signed_integer_to_string(0) == '0'
