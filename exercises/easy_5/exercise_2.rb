@@ -9,7 +9,7 @@ MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
 def time_of_day(delta_time)
   hours, minutes = delta_time.divmod(60)
   hours = hours % 24
-  p format('%02d:%02d', hours, minutes)
+  format('%02d:%02d', hours, minutes)
 end
 
 time_of_day(0) == "00:00"

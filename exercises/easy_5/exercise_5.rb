@@ -11,7 +11,7 @@ def cleanup(text)
       clean_text += ' ' unless clean_text[-1] == ' '
     end
   end
-  p clean_text
+  clean_text
 end
 
-p cleanup("---what's my +*& line?") == ' what s my line '
+cleanup("---what's my +*& line?") == ' what s my line '

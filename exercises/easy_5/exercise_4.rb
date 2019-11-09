@@ -1,15 +1,13 @@
 # Given a string of words separated by spaces, write a method that takes this string of words and returns a string in which the first and last letters of every word are swapped.
 
-def swap_first_last_char(word)
-  word[0], word[-1] = word[-1], word[0]
-  word
+def swap(str)
+  new_str = str.split.map do |word| 
+    word[0], word[-1] = word[-1], word[0] 
+    word
+  end
+  new_str.join(' ')
 end
 
-def swap(words)
-  result = words.split.map { |word| swap_first_last_char(word) }
-  result.join(' ')
-end
-
-p swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
-p swap('Abcde') == 'ebcdA'
-p swap('a') == 'a'
+swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
+swap('Abcde') == 'ebcdA'
+swap('a') == 'a'
