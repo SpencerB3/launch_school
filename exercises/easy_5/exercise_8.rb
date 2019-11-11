@@ -6,8 +6,8 @@ NUMBER_WORDS = %w(zero one two three four
                   fifteen sixteen seventeen eighteen nineteen)
 
 def alphabetic_number_sort(array)
-  new_array = array.map { |num| NUMBER_WORDS[num] }.sort
-  p new_array.map { |num| NUMBER_WORDS.index(num) }
+  alphabetic_array = array.map { |num| NUMBER_WORDS[num] }.sort
+  alphabetic_array.map { |num| NUMBER_WORDS.index(num) }
 end
 
 alphabetic_number_sort((0..19).to_a) == [

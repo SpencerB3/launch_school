@@ -1,14 +1,14 @@
 # Write a method that will take a short line of text, and print it within a box.
 
-def print_in_box(banner)
-  horizontal_rule = "+#{'-' * (banner.length + 2)}+"
-  empty_line = "|#{' ' * (banner.length + 2)}|"
-  
-  puts horizontal_rule
-  puts empty_line
-  puts "| #{banner} |"
-  puts empty_line
-  puts horizontal_rule
+def print_in_box(string)
+  horizontal_line = "+-#{'-' * string.size}-+"
+  blank_line = "| #{' ' * string.size} |"
+
+  puts horizontal_line
+  puts blank_line
+  puts "| #{string} |"
+  puts blank_line
+  puts horizontal_line
 end
 
 print_in_box('To boldly go where no one has gone before.')

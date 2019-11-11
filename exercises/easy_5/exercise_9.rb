@@ -2,20 +2,10 @@
 
 def crunch(string)
   new_string = ''
-  i = 0
-  while i < string.length
-    unless string[i] == string[i + 1]
-      new_string += string[i]
-    end
-    i += 1
+  string.each_char do |char|
+    new_string << char unless char == new_string[-1]
   end
   new_string
-  # string.each_char do |char|
-  #   if char != new_string[-1]
-  #     new_string += char
-  #   end
-  # end
-  # p new_string
 end
 
 crunch('ddaaiillyy ddoouubbllee') == 'daily double'
