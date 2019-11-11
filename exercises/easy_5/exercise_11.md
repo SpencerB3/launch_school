@@ -11,4 +11,4 @@ end
 spin_me("hello world") # "olleh dlrow"
 ```
 
-Because the `split` method is called on the argument (converting the string to an array), the method will return a different object from the argument that was originally passed in.
+Because the `split` method and then `join` is called on the argument (converting the string to an array then back into a string), the method will return a different string object from the argument that was originally passed in.  
