@@ -5,7 +5,8 @@
 # You may assume that the input String will always contain at least two words.
 
 def penultimate(string)
-  string.split[-2]
+  string.split.fetch(-2)
+  # string.split[-2]
 end
 
 penultimate('last word') == 'last'

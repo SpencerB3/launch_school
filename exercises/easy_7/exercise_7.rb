@@ -3,8 +3,9 @@
 def show_multiplicative_average(array)
   product = 1.to_f
   array.each { |num| product *= num }
-  average = product / array.size
-  puts format('%.3f', average)
+  average = product / (array.size)
+  formatted_avg = format('%.3f', average)
+  puts "The result is #{formatted_avg}"
 end
 
 show_multiplicative_average([3, 5])
