@@ -1,0 +1,1 @@
+# a hash stores information in the form of key/value pairs.  Arrays store information sequentially (the 'keys' could arguably be the indices).

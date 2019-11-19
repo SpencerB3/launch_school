@@ -1,0 +1,1 @@
+# https://docs.ruby-lang.org/en/2.6.0/ I find this site the easiest to navigate.  I especially prefer the serch bar that aallows me to quicky find an array method for exaample before I have even finished typing it.
