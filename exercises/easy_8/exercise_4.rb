@@ -12,7 +12,6 @@ end
 
 def substrings(string)
   result = []
-  i = 0
   loop do
     result.concat(substrings_at_start(string))
     string = string[1..-1]
