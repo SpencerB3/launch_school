@@ -117,7 +117,7 @@ The `Array#take` return the first `n` elements of the array upon which it is cal
 
 
 
-####Practice Problem 9
+#### Practice Problem 9
 
 What is the return value of map in the following code? Why?
 
@@ -134,7 +134,7 @@ The `Array#map` method initializes a new array which is populated with the resul
 
 
 
-####Practice Problem 10
+#### Practice Problem 10
 
 What is the return value of the following code? Why?
 
