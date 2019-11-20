@@ -21,15 +21,8 @@ def substrings(string)
 end
 
 def palindromes(string)
-
-  result = []
-  all_substring = substrings(string)
-  all_substring.each do |substring|
-    if is_palindrome?(substring)
-      result << substring
-    end
-  end
-  result
+  all_substrings = substrings(string)
+  all_substrings.select { |substring| is_palindrome?(substring) }
 end
 
 def is_palindrome?(substring)
