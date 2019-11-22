@@ -18,8 +18,8 @@ NUMBER_STRINGS = { 'one' => '1', 'two' => '2', 'three' => '3', 'four' => '4',
                    'nine' => '9' }.freeze
 
 def word_to_digit(string)
-  NUMBER_STRINGS.each do |letter, num|
-    string.gsub!(letter, num) if string.include?(letter)
+  NUMBER_STRINGS.keys.each do |word|
+    string.gsub!(/\b#{word}\b/, NUMBER_STRINGS[word])
   end
   string
 end
