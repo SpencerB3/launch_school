@@ -2,15 +2,31 @@
 
 # Write a method that takes one argument, the total number of switches, and returns an Array that identifies which lights are on after n repetitions.
 
-# Example with n = 5 lights:
+def make_lights_hash(lights)
+  light_hash = Hash.new
+  1.upto(lights) { |light_number| light_hash[light_number] = 'off' }
+  light_hash
+end
 
-# round 1: every light is turned on
-# round 2: lights 2 and 4 are now off; 1, 3, 5 are on
-# round 3: lights 2, 3, and 4 are now off; 1 and 5 are on
-# round 4: lights 2 and 3 are now off; 1, 4, and 5 are on
-# round 5: lights 2, 3, and 5 are now off; 1 and 4 are on
-# The result is that 2 lights are left on, lights 1 and 4. The return value is [1, 4].
+def collect_on_lights(hash)
+  hash
+  hash.select { |_, condition| condition == 'on' }.keys
+end
+  
+def flip_every_nth_switch(hash, nth)
+  hash.each do |position, state|
+    if position % nth == 0
+      hash[position] = (state == 'off') ? 'on' : 'off'
+    end
+  end
+end
 
-# With 10 lights, 3 lights are left on: lights 1, 4, and 9. The return value is [1, 4, 9].
+def flip_switch(rounds)
+  lights = make_lights_hash(rounds)
+  1.upto(lights.size) do |round|
+    flip_every_nth_switch(lights, round)
+  end
+  collect_on_lights(lights)
+end
 
-
+flip_switch(5) # => [1, 4]
