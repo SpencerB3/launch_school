@@ -6,5 +6,6 @@ let numbers3 = [2, 4, 6, 8];
 
 // Return true or false depending on each result.
 
-
-
+numbers1.includes(3);
+numbers2.includes(3);
+numbers3.includes(3);
