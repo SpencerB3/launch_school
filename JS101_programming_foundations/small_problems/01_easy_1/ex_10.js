@@ -4,14 +4,12 @@
 
 
 function multisum(num) {
-  let array = [];
   let sum = 0;
-  for (let i = 0; i <= num; i += 1) {
+  for (let i = 1; i <= num; i += 1) {
     if (i % 3 === 0 || i % 5 === 0) {
-      array.push(i);
+      sum += i;
     }
   }
-  array.forEach( num => sum += num);
   return sum;
 }
 
