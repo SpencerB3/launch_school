@@ -29,13 +29,12 @@ function twice(number) {
 }
 
 function isDoubleNumber(number) {
-  let number_str = String(number);
-  let middle = Math.floor(number_str.length / 2);
-  console.log(middle)
-  let first_half = number_str.slice(0, middle);
-  let second_half = number_str.slice(middle);
-  console
-  return first_half === second_half;
+  let numberStr = String(number);
+  let middle = Math.floor(numberStr.length / 2);
+  let firstHalf = numberStr.slice(0, middle);
+  let secondHalf = numberStr.slice(middle);
+  
+  return firstHalf === secondHalf;
 }
 
 twice(37);          // 74

@@ -25,15 +25,15 @@ end
 */
 
 function cleanUp(text) {
-  let clean_text = '';
+  let cleanText = '';
   for( let i = 0; i < text.length; i += 1) {
     if (isLowerCase(text[i]) || isUpperCase(text[i])) {
-      clean_text += text[i];
-    } else if (clean_text[clean_text.length - 1] !== ' ') { // if the last character is not a space, make it a space
-      clean_text += ' ';
+      cleanText += text[i];
+    } else if (cleanText[cleanText.length - 1] !== ' ') { // if the last character is not a space, make it a space
+      cleanText += ' ';
     }
   }
-  return clean_text;
+  return cleanText;
 }
 
 function isUpperCase(char) {

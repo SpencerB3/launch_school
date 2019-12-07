@@ -11,7 +11,7 @@ return empty string
 
 function stringy(number) {
   let result = '';
-  for(let i = 0; i < number; i += 1) {
+  for (let i = 0; i < number; i += 1) {
     i % 2 === 0 ? result += '1' : result += '0'
   }
   return result;

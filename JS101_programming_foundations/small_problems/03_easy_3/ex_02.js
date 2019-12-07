@@ -2,14 +2,14 @@
 const log = (message) => console.log(`${message}`);
 
 function logInBox(message) {
-  let horizonal_line = (`+-${'-'.repeat(string.length)}-+`);
-  let empty_line = (`| ${' '.repeat(string.length)} |`);
+  let horizonalLine = (`+-${'-'.repeat(message.length)}-+`);
+  let emptyLine = (`| ${' '.repeat(message.length)} |`);
 
-  log(horizonal_line);
-  log(empty_line);
+  log(horizonalLine);
+  log(emptyLine);
   log(`| ${message} |`);
-  log(empty_line);
-  log(horizonal_line);
+  log(emptyLine);
+  log(horizonalLine);
 }
 
 logInBox('To boldly go where no one has gone before.');

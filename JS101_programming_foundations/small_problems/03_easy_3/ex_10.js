@@ -30,16 +30,16 @@ end
 
 function century(year) {
   let century = Math.ceil(year / 100);
-  return `${String(century)}${century_suffix(century)}`;
+  return `${String(century)}${centurySuffix(century)}`;
 }
 
-function century_suffix(century) {
+function centurySuffix(century) {
   if ([11, 12, 13].includes(century % 100)) {
     return 'th';
   }
-  let last_digit = century % 10;
+  let lastDigit = century % 10;
 
-  switch (last_digit) {
+  switch (lastDigit) {
     case 1: return 'st';
     case 2: return 'nd';
     case 3: return 'rd';
