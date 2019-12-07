@@ -8,13 +8,13 @@
 // The tip is $30.00
 // The total is $230.00
 
-let rlsync = require("readline-sync");
+let rlSync = require("readline-sync");
 
 console.log("What is the bill?");
-let bill = parseFloat(rlsync.prompt());
+let bill = parseFloat(rlSync.prompt());
 
 console.log("What is the tip percentage?");
-let percentage = parseFloat(rlsync.prompt());
+let percentage = parseFloat(rlSync.prompt());
 
 let tip = bill * (percentage / 100);
 let total = bill + tip;

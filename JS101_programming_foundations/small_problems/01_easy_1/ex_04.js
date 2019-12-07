@@ -8,8 +8,8 @@ const SQ_FEET_PER_SQ_METER = 10.7639;
 let length = Number(rlSync.question("Enter the length of the room in meters:\n"));
 let width = Number(rlSync.question("Enter the width of the room in meters:\n"));
 
-let area_meters = (length * width).toFixed(2);
+let areaMeters = (length * width).toFixed(2);
 
-let area_feet = (area_meters * SQ_FEET_PER_SQ_METER).toFixed(2);
+let areaFeet = (areaMeters * SQ_FEET_PER_SQ_METER).toFixed(2);
 
-console.log(`The area of the room is ${area_meters} square meters(${area_feet} square feet).`);
+console.log(`The area of the room is ${areaMeters} square meters(${areaFeet} square feet).`);

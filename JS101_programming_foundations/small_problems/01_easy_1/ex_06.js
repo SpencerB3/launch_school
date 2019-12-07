@@ -14,7 +14,7 @@
 
 let rlSync = require('readline-sync');
 
-function find_sum(num) {
+function findSum(num) {
   let sum = 0
   for (let i = 0; i <= num; i += 1) {
     sum += i;
@@ -22,7 +22,7 @@ function find_sum(num) {
   return sum;
 }
 
-function find_product(num) {
+function findProduct(num) {
   let product = 1;
   for(let i = 1; i <= num; i += 1) {
     product *= i;
@@ -35,11 +35,11 @@ let integer = Number(rlSync.prompt());
 // let integer = Number(rlSync.question("Please enter an integer greater than 0:\n"));
 
 console.log("Enter 's' to compute the sum, or 'p' to compute the product:")
-let operation = Number(rlSync.prompt());
+let operation = rlSync.prompt();
 // let operation = rlSync.question("Enter 's' to compute the sum, or 'p' to compute the product\n").toLowerCase();
 
-let sum = find_sum(integer);
-let product = find_product(integer);
+let sum = findSum(integer);
+let product = findProduct(integer);
 
 if (operation === 's') {
   console.log(`The sum of the integers between 1 and ${integer} is ${sum}.`);
