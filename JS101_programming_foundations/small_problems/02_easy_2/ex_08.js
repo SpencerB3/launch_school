@@ -4,12 +4,12 @@
 // declare array, for loop with +2 iteration, push elements, return new array
 
 function oddities(array) {
-  let odd_ele = [];
+  let oddEle = [];
 
   for( let i = 0; i < array.length; i += 2) {
-    odd_ele.push(array[i]);
+    oddEle.push(array[i]);
   }
-  return odd_ele;
+  return oddEle;
 }
 
 console.log(oddities([2, 3, 4, 5, 6])); // logs [2, 4, 6]

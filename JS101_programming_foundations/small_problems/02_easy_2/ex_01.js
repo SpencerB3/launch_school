@@ -19,9 +19,9 @@ set function greeting, parameter one is an array with the spread parameter, p 2 
 */
 
 function greetings([...names], status ) {
-  let full_name = [...names].join(' ');
-  let job_title = Object.values(status).join(' ');
-  return `Hello, ${full_name}! Nice to have a ${job_title} around.`
+  let fullName = [...names].join(' ');
+  let jobTitle = Object.values(status).join(' ');
+  return `Hello, ${fullName}! Nice to have a ${jobTitle} around.`
 }
 
 console.log(
