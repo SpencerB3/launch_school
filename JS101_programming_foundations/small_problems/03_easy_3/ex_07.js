@@ -25,7 +25,7 @@ declare isDoubleNumber function
 */
 
 function twice(number) {
-  console.log(isDoubleNumber(number) ? number : number * 2);
+  return isDoubleNumber(number) ? number : number * 2;
 }
 
 function isDoubleNumber(number) {
