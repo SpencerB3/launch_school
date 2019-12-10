@@ -1,19 +1,31 @@
-// Ask the user for the first number.
-// Ask the user for the second number.
-// Ask the user for an operation to perform.
-// Perform the operation on the two numbers.
-// Print the result to the terminal.
+const messagesJSON = require('calculator_messages.json');
+const MESSAGES = JSON.parse(messagesJSON);
 
 const rlSync = require('readline-sync');
 
 const log = (message) => console.log(`=> ${message}`);
+let anotherCalc;
+let name = rlSync.prompt();
 
 function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-log('Welcome to Calculator!');
+function isValidName(name) {
+  return name.trimStart() !== '';
+}
 
+while (!isValidName(name)) {
+  console.log('Hmmm... that does not seem like you typed anything.  Try again.');
+  name = rlSync.prompt();
+}
+
+log(MESSAGES['welcome']);
+log(MESSAGES['name']);
+
+log(`Hi, ${name}!`);
+
+do {
 log('Enter your first number:');
 let number1 = rlSync.question();
 
@@ -57,3 +69,13 @@ switch (operation) {
 }
 
 log(`The result is ${output}.`);
+
+log('Would you like to do another calculation?')
+log("Enter 'y' if yes, else enter any other key to exit this program")
+
+anotherCalc = rlSync.prompt().toLowerCase();
+console.clear();
+
+} while (anotherCalc === 'y');
+
+log('Thank you for using Calculator!');
