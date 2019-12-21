@@ -19,14 +19,3 @@ hsh.each_with_object([]) do |(_, value), array|
     array << value[:size].upcase
   end
 end
-
-
-# hsh.map do |_, value|
-#   if value[:type] == 'fruit'
-#     value[:colors].map do |color|
-#       color.capitalize
-#     end
-#   elsif value[:type] == 'vegetable'
-#     value[:size].upcase
-#   end
-# end
