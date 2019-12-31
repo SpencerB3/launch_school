@@ -103,6 +103,19 @@ def announce_winner(score)
   end
 end
 
+def find_at_risk_square(line, board)
+
+  if board.values_at(*line).count("X") == 2
+    board.select { |k, v| line.include?(k) && v == ' ' }.keys.first
+  else
+    nil
+  end
+  
+end
+
+
+end
+
 # main body
 loop do
   prompt('Welcome to TicTacToe')
