@@ -3,14 +3,10 @@
 // You may assume that the number passed in is an integer greater than 1.
 
 
-function multisum(num) {
-  let sum = 0;
-  for (let i = 1; i <= num; i += 1) {
-    if (i % 3 === 0 || i % 5 === 0) {
-      sum += i;
-    }
-  }
-  return sum;
+let multisum = function (num) {
+  let numbers = [...Array(num + 1).keys()];
+  let filteredNums = numbers.filter((num) => num % 3 === 0 || num % 5 === 0);
+  return filteredNums.reduce((sum, cur) => sum + cur);
 }
 
 multisum(3);       // 3
