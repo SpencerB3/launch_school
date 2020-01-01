@@ -2,10 +2,9 @@
 
 // You may assume that the number passed in is an integer greater than 1.
 
-
 let multisum = function (num) {
   let numbers = [...Array(num + 1).keys()];
-  let filteredNums = numbers.filter((num) => num % 3 === 0 || num % 5 === 0);
+  let filteredNums = numbers.filter((num) => num % 3 === 0 || num % 5 === 0);   
   return filteredNums.reduce((sum, cur) => sum + cur);
 }
 
