@@ -2,8 +2,6 @@
 
 // You may assume that the count argument will always be an integer greater than or equal to 0. The starting number can be any integer.If the count is 0, the function should return an empty array.
 
-
-
 function sequence(num, start) {
   let array = [];
   for (let i = 0; i < num; i += 1) {
@@ -13,9 +11,9 @@ function sequence(num, start) {
   return array;
 }
 
-function sequence(num, start) {
-  return Array(num).fill().map((_, idx) => start * (idx + 1));
-}
+// function sequence(num, start) {
+//   return Array(num).fill().map((_, idx) => start * (idx + 1));
+// }
 
 sequence(5, 1);          // [1, 2, 3, 4, 5]
 sequence(4, -7);         // [-7, -14, -21, -28]
