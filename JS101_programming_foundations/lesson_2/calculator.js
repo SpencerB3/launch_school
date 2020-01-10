@@ -6,57 +6,115 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function invalidNumber(number) {
-  return Number.isNaN(number);
+function chooseLanguage() {
+  prompt(MESSAGES['language']);
+  let language = rlSync.question().toLowerCase();
+
+  while (!validateLanguage(language)) {
+    prompt(MESSAGES["invalidLanguage"]);
+    language = rlSync.question().toLowerCase();
+  }
+  return language;
 }
-let answer;
 
-// main code
-prompt('Welcome to Calculator!');
-
-do {
-  let number1 = Number(rlSync.question("=> What's your first number?\n"));
+function getFirstNumber() {
+  prompt(MESSAGES[language]['firstNumber']);  
+  let number1 = rlSync.question();
 
   while (invalidNumber(number1)) {
-    prompt("Hmm, that doesn't look like a valid number.  Try again");
+    prompt(MESSAGES[language]['invalidNumber']);
     number1 = rlSync.question();
   }
+  return number1;
+}
 
-  let number2 = Number(rlSync.question("=> What's your second number?\n"));
+function getSecondNumber() {
+  prompt(MESSAGES[language]['secondNumber']);
+  let number2 = rlSync.question();
 
   while (invalidNumber(number2)) {
-    prompt("Hmm, that doesn't look like a valid number.  Try again");
+    prompt(MESSAGES[language]['invalidNumber']);
     number2 = rlSync.question();
   }
+  return number2;
+}
 
-  prompt("What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide")
+function invalidNumber(number) {
+  return number.trimStart() === '' || Number.isNaN(Number(number));
+}
+
+function validateLanguage(language) {
+  switch (language) {
+    case 'en': return true;
+    case 'es': return true;
+    default: return false;
+  }
+}
+
+function calculations(operation, number1, number2) {
+  switch (operation) {
+    case 1: return Number(number1) + Number(number2);
+    case 2: return Number(number1) - Number(number2);
+    case 3: return Number(number1) * Number(number2);
+    case 4: return Number(number1) / Number(number2);
+  }
+}
+
+function chooseOperation(language, number2) {
+  prompt(MESSAGES[language]['operations']);
   let operation = Number(rlSync.question());
 
   while (![1, 2, 3, 4].includes(operation)) {
-    prompt('Must choose 1, 2, 3, or 4');
-    operation = rlSync.questionFloat();
+    prompt(MESSAGES[language]['invalidOperations']);
+    operation = Number(rlSync.question());
   }
+  while (operation === 4 && number2 === '0') {
+    prompt(MESSAGES[language]['invalidDivision']);
+    operation = Number(rlSync.question());
+  }
+  return operation;
+}
 
-  let output;
+function convertOperation(operation) {
   switch (operation) {
-    case 1:
-      output = number1 + number2;
-      break;
-    case 2:
-      output = number1 - number2;
-      break;
-    case 3:
-      output = number1 * number2;
-      break;
-    case 4:
-      output = number1 / number2;
+    case 1: return '+';
+    case 2: return '-';
+    case 3: return 'x';
+    case 4: return '/';
   }
+}
 
-  prompt(`The result is ${output}.`);
+let answer;
 
-  prompt("Would you like to do another calculation? Type y or n")
-  answer = rlSync.question().toLowerCase;
+// initial code
+console.clear();
 
-} while (answer === 'y');
+let language = chooseLanguage();
 
-prompt('Thank you for using Calculator!  Good bye!');
+console.clear();
+
+// main code
+prompt(MESSAGES[language]['welcome']);
+
+do {
+
+  let number1 = getFirstNumber()
+  console.clear();
+
+  let number2 = getSecondNumber();
+  console.clear();
+
+  let operation = chooseOperation(language, number2);
+
+  console.clear();
+
+  let output = calculations(operation, number1, number2);
+
+  prompt(`${number1} ${convertOperation(operation)} ${number2} = ${output}`);
+
+  answer = rlSync.question(prompt(MESSAGES[language]["anotherCalculation"]));
+
+} while (answer === 'y' || answer === 'yes');
+
+console.clear();
+prompt(MESSAGES['thankYou']);

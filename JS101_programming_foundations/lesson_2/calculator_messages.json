@@ -1,6 +1,27 @@
 {
-  "welcome": "Welcome to Calculator!",
-  "name": "Please enter your name:"
-  
+  "language": "Type 'en' for English -- Oprime 'es' por Espanol",
+  "invalidLanguage": "Not valid. Try again -- No es valido.  Intentalo de nuevo",
 
+  "en": {
+    "welcome": "Welcome to Calculator!",
+    "firstNumber": "What's your first number?",
+    "secondNumber": "What's the second number?",
+    "invalidNumber": "Invalid number.  Try again",
+    "operations": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+    "invalidOperations": "Must choose 1, 2, 3, or 4",
+    "invalidDivision": "Invalid. '0' cannot be a divisor. Choose another operator",
+    "anotherCalculation": "Would you like to do another calculation?\nType 'y' to continue. Type anything else to exit the program.",
+    "thankYou": "Thank you for using Calculator.  Good-bye!"
+  },
+  "es": {
+    "welcome": "Bienvenidos a Calculadora!",
+    "firstNumber": "Cual es tu primer numero?",
+    "secondNumber": "Cual es tu segundo numero?",
+    "invalidNumber": "Hmm, no parece un numero valido. Intentalo de nuevo",
+    "operations": "Cual operacion quiere hacer?\n1) Añadir 2) Sustraer 3) Multiplicar 4) Dividir",
+    "invalidOperations": "Debe escoger 1, 2, 3, o 4",
+    "invalidDivision": "Invalido. '0' no puede ser un divisor. Escoge otra operacion",
+    "anotherCalculation": "Quiere hacer otra operation? Oprima 'y' para continuar. Oprima qualquier otra respuesta para salir del programa."
+  },
+  "thankYou": "Thank you - Good-bye! -- Gracias - Adios!"
 }
