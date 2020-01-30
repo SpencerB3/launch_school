@@ -2,17 +2,16 @@
 
 // You may assume that all angles have integer values, so you do not have to worry about floating point errors.You may also assume that the arguments are in degrees.
 
-function isValid(arr) {
-  if (arr.some(angle => angle === 0)) return false;
-  if (arr.reduce((acc, num) => acc + num) !== 180) {
+function isValid(...degrees) {
+  if (degrees.some(angle => angle === 0)) return false;
+  if (degrees.reduce((acc, num) => acc + num) !== 180) {
     return false;
   }
   return true;
 }
 
 function triangle(...degrees) {
-  degrees = degrees.sort((a, b) => a - b);
-  if (!isValid(degrees)) return 'invalid';
+  if (!isValid(...degrees)) return 'invalid';
 
   if (degrees.some(degree => degree === 90)) {
     return 'right';

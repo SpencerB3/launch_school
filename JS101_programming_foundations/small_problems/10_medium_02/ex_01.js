@@ -5,17 +5,16 @@
 // the percentage of characters that are neither
 // You may assume that the string will always contain at least one character.
 
-function letterPercentages(string) {
-  let count = string.length;
+function findPercentages(regex, string) {
+  let matchingChars = (string.match(regex) || []).length;
+  return (((matchingChars / string.length) * 100).toFixed(2));
+}
 
-  function percentage(regex) {
-    let matchingChars = string.match(regex) || [];
-    return ((matchingChars.length / count) * 100).toFixed(2);
-  }
+function letterPercentages(string) {
   return {
-    lowercase: percentage(/[a-z]/g),
-    uppercase: percentage(/[A-Z]/g),
-    neither: percentage(/[^a-z]/gi)
+    lowercase: findPercentages(/[a-z]/g, string),
+    uppercase: findPercentages(/[A-Z]/g, string),
+    neither: findPercentages(/[^a-z]/gi, string)
   };
 }
 
