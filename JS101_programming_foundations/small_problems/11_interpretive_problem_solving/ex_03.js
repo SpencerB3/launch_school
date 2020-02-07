@@ -10,7 +10,7 @@
 function isBlockWord(word) {
   let blocks = ['BO', 'XK', 'DQ', 'CP', 'NA', 'GT', 'RE', 'FS', 'JW', 'HU', 'VI', 'LY', 'ZM'];
 
-  for (idx = 0; idx < word.length; idx += 1) {
+  for (let idx = 0; idx < word.length; idx += 1) {
     let index = blocks
                 .findIndex(block => block.includes(word[idx].toUpperCase()));
     if (index < 0) {
