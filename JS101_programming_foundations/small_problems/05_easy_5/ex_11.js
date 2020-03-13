@@ -17,7 +17,7 @@ function formatTime(hours, minutes) {
 }
 
 function timeOfDay(deltaMinutes) {
-  if (deltaMinutes < 0) {
+  if (deltaMinutes < 10) {
     deltaMinutes = (deltaMinutes % MINUTES_PER_DAY) + MINUTES_PER_DAY;
   } else {
     deltaMinutes = deltaMinutes % MINUTES_PER_DAY;

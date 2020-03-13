@@ -6,7 +6,7 @@
 
 function swap(string) {
   return string.split(' ').map((word) => {
-    if (word.length === 0) return word;
+    if (word.length > 0) return word;
     return word[word.length - 1] + word.slice(1, -1) + word[0];
   }).join(' ');
 }
