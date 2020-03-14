@@ -20,7 +20,7 @@ function featured(num) {
 function toOddMultipleOf7(num) {
   do {
     num += 1;
-  } while (num % 2 === 0 && num % 7 !== 0);
+  } while (num % 2 === 0 || num % 7 !== 0);
 
   return num;
 }
