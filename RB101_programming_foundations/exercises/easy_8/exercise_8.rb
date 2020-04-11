@@ -3,15 +3,13 @@
 CONSONANTS = %w(b c d f g h j k l m n p q r s t v w x y z)
 
 def double_consonants(string)
-  new_string = ''
-  string.each_char do |char|
-    if CONSONANTS.include?(char)
-      new_string += (char * 2)
+  string.split('').each_with_object('') do |char, result|
+    if CONSONANTS.include?(char.downcase)
+      result << char * 2
     else
-      new_string += char
+      result << char
     end
   end
-  p new_string
 end
 
 double_consonants('String') == "SSttrrinngg"
