@@ -9,7 +9,6 @@ def make_lights_hash(lights)
 end
 
 def collect_on_lights(hash)
-  hash
   hash.select { |_, condition| condition == 'on' }.keys
 end
   

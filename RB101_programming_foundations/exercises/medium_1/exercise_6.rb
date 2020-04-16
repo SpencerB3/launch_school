@@ -18,15 +18,15 @@ def minilang(commands)
 
   commands.split.each do |command|
     case command
-    when 'PUSH' then stack.push(register)
-    when 'ADD' then register += stack.pop 
-    when 'SUB' then register -= stack.pop
-    when 'MULT' then register *= stack.pop
-    when 'DIV' then register /= stack.pop
-    when 'MOD' then register %= stack.pop
-    when 'POP' then register = stack.pop
-    when 'PRINT' then p register
-    else            register = command.to_i
+    when 'PRINT' then puts register
+    when 'PUSH'  then stack.push(register)
+    when 'ADD'   then register += stack.pop 
+    when 'SUB'   then register -= stack.pop
+    when 'MULT'  then register *= stack.pop
+    when 'DIV'   then register /= stack.pop
+    when 'MOD'   then register %= stack.pop
+    when 'POP'   then register = stack.pop
+    else              register = command.to_i
     end
   end
 end
