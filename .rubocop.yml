@@ -1,4 +1,4 @@
-# .rubocop.yml for RB101 Lessons 2-5 (02 Aug 2019)
+# .rubocop.yml for RB101 Lessons 2-5 (10 Dec 2019)
 
 AllCops:
   # Display cop names
