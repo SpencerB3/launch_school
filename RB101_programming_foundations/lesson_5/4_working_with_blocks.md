@@ -109,13 +109,13 @@ end
 # => [{ :c => "cat" }]
 ```
 
-Line | Action | Object | Side Effect | Return Value | Is Return Value Used? |
----  | -----  | ------ | ----------  | ------------ | --------------------- |
-|1|method call (`select`)|array containing two hashes|none|new array| no, outputed at last line|
-|1-5| block execution | each hash contained in original array at that iteration| none | if element is evaluated to a truthy value| yes, by `select` method|
-|2|method call `all?`|each hash at that iteration|none| 1st iteration: falsey, 2nd iteration: truthy| yes, by `select` method|
-|3|method call (`to_s`)|`key` parameter, key in hash|none| Symbol object is turned to String object| yes, by `==` operator|
-|3|`==` equality comparison|values of value[0] and key.to_s|none|Boolean|yes, by `all?` method|
+ | Line | Action | Object | Side Effect | Return Value |Is Return Value Used?
+---  | -----  | ------ | ----------  | ------------ | --------------------- | --------------------- 
+|1|method call (`select`)|array containing two hashes|none|new array| no, outputed at last line
+|1-5| block execution | each hash contained in original array at that iteration| none | if element is evaluated to a truthy value| yes, by `select` method
+|2|method call `all?`|each hash at that iteration|none| 1st iteration: falsey, 2nd iteration: truthy| yes, by `select` method
+|3|method call (`to_s`)|`key` parameter, key in hash|none| Symbol object is turned to String object| yes, by `==` operator
+|3|`==` equality comparison|values of value[0] and key.to_s|none|Boolean|yes, by `all?` method
 |3|`[]` method call| value parameter, a String|none|value of first index of String| yes, by `==` equality comparison
 
 ## Example 7

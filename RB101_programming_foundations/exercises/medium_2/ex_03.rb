@@ -18,7 +18,7 @@ def letter_percentages(string)
     end
   end
 
-  lowercase_percentage = (lowercase_count / string.size.to_f) * 100
+  lowercase_percentage = (lowercase_count.to_f / string.size) * 100
   uppercase_percentage = (uppercase_count.to_f / string.size) * 100
   neither_percentage = (neither.to_f / string.size) * 100
 

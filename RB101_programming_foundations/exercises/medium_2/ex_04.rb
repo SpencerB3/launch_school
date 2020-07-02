@@ -2,16 +2,14 @@
 # Note that balanced pairs must each start with a (, not a ).
 
 def balanced?(string)
-  count = 0
+  counter = 0
   string.each_char do |char|
-    if char == '('
-      count += 1
-    elsif char == ')'
-      count -= 1
-      return false if count == -1
-    end
+    counter += 1 if char == '('
+    counter -= 1 if char == ')'
+    return false if counter < 0
   end
-  count.zero? ? true : false
+
+  counter == 0
 end
 
 p balanced?('What (is) this?') == true
