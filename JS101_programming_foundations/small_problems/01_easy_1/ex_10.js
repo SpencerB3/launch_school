@@ -4,8 +4,8 @@
 
 let multisum = function (num) {
   let numbers = [...Array(num + 1).keys()];
-  let filteredNums = numbers.filter((num) => num % 3 === 0 || num % 5 === 0);   
-  return filteredNums.reduce((sum, cur) => sum + cur);
+  let filtersNums = numbers.filter( num => num % 5 === 0 || num % 3 === 0);
+  return filtersNums.reduce((sum, cur) => sum + cur);
 }
 
 multisum(3);       // 3
