@@ -1,56 +1,105 @@
 const rlSync = require('readline-sync');
-const prompt = (message) => console.log(`==> ${message}`);
+const MESSAGES = require('./loan_calculator_messages.json');
 
-function isInvalidNumber(number) {
-  return number.trim() === '' ||
-         Number(number) < 0   ||
-         Number.isNaN(Number(number));
+const MONTHS_PER_YEAR = 12;
+
+function prompt(message) {
+  console.log(`=> ${message}`);
 }
 
-prompt('Welcome to Loan Calculator');
+function isInvalidNumber(num) {
+  return num.trim() === 0 ||
+    Number.isNaN(Number(num)) ||
+    Number(num) <= 0;
+}
 
-while (true) {
-  prompt('-------------------------------');
-
-  prompt("Please enter your loan amount");
-  let loanAmount = rlSync.question();
-
-  while (isInvalidNumber(loanAmount)) {
-    prompt("That doesn't look like a valid positive number.  Try again");
-    loanAmount = rlSync.question();
+function isNotWholeNumber(num) {
+  if (Number(num) - Math.floor(Number(num)) !== 0) {
+    return true;
+  } else {
+    return false;
   }
+}
 
-  prompt("Please enter your annual interest \n Enter 5 for 5%, 10 for 10%");
-  let annualInterest = rlSync.question();
+function getLoanAmount() {
+  prompt(MESSAGES['loanAmount']);
+  let loan = rlSync.question();
 
-  while (isInvalidNumber(annualInterest)) {
-    prompt("That doesn't look like a valid positive number.  Try again");
-    annualInterest = rlSync.question();
+  while (isInvalidNumber(loan)) {
+    prompt(MESSAGES['invalidNum']);
+    loan = rlSync.question();
   }
+  return Number(loan);
+}
 
-  prompt("Please enter your loan duration in months");
-  let loanDuration = rlSync.question();
+function getAnnualInterestRate() {
+  prompt(MESSAGES['getAPR']);
+  let annualInterestRate = rlSync.question();
 
-  while (isInvalidNumber(loanDuration)) {
-    prompt("That doesn't look like a valid positive number.  Try again");
-    loanDuration = rlSync.question();
+  while (isInvalidNumber(annualInterestRate)) {
+    prompt(MESSAGES['invalidAPR']);
+    annualInterestRate = rlSync.question();
   }
+  return Number(annualInterestRate);
+}
 
-  let monthlyInterest = Number(annualInterest / 12) / 100;
+function getLoanDurationYears() {
+  prompt(MESSAGES['loanDuration']);
+  let loanDurationYears = rlSync.question();
 
-  let payment = Number(loanAmount) * (monthlyInterest / 
-                (1 - Math.pow((1 + monthlyInterest), (Number(-loanDuration)))));
+  while (isInvalidNumber(loanDurationYears) ||
+    isNotWholeNumber(loanDurationYears)) {
+    prompt(MESSAGES['invalidLoanDuration']);
+    loanDurationYears = rlSync.question();
+  }
+  return Number(loanDurationYears);
+}
 
-  prompt(`Your monthly payment will be $${payment.toFixed(2)}.`)
+function calculatePayment(loan, monthlyInterestRate, loanDurationMonths) {
+  return (loan * (monthlyInterestRate /
+    (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationMonths)))));
+}
 
-  prompt("Another calculation? Type y for yes, n for no");
+function getAnotherCalculation() {
+  prompt(MESSAGES['anotherCalculation']);
   let answer = rlSync.question().toLowerCase();
 
-  while (answer[0] !== 'y' && answer[0] !== 'n') {
-    prompt("That doesnt look like a valid answer.  Please enter 'y' or 'n'.");
-    answer = rlSync.question().toLowerCase();
+  while (!['y', 'yes', 'n', 'no'].includes(answer)) {
+    prompt(MESSAGES['invalidAnswer']);
+    answer = rlSync.question();
   }
-  if (answer[0] === 'n') break;
+  return answer;
 }
 
-prompt("Thank you for using Loan Calculator!")
+// -----------main code-------------
+
+console.clear();
+prompt(MESSAGES['welcome']);
+
+while (true) {
+
+  let loan = getLoanAmount();
+  console.clear();
+
+  let annualInterestRate = getAnnualInterestRate();
+  console.clear();
+
+  let loanDurationYears = getLoanDurationYears();
+  console.clear();
+
+  let monthlyInterestRate = ((annualInterestRate / 100) / MONTHS_PER_YEAR);
+
+  let loanDurationMonths = loanDurationYears * MONTHS_PER_YEAR;
+
+  let monthlyPayment = calculatePayment(loan, monthlyInterestRate,
+    loanDurationMonths);
+
+  prompt(`Your monthly payment is $${monthlyPayment.toFixed(2)}.`);
+
+  let answer = getAnotherCalculation();
+
+  if (answer[0] === 'n' || answer === 'no') break;
+}
+
+console.clear();
+prompt(MESSAGES['thankYou']);
