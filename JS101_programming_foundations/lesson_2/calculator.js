@@ -1,6 +1,6 @@
 const MESSAGES = require('./calculator_messages.json');
-
 const rlSync = require('readline-sync');
+let language;
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -10,111 +10,105 @@ function chooseLanguage() {
   prompt(MESSAGES['language']);
   let language = rlSync.question().toLowerCase();
 
-  while (!validateLanguage(language)) {
-    prompt(MESSAGES["invalidLanguage"]);
+  while (!isValidLanguage(language)) {
+    prompt(MESSAGES['invalidLanguage']);
     language = rlSync.question().toLowerCase();
   }
   return language;
 }
 
-function getFirstNumber() {
-  prompt(MESSAGES[language]['firstNumber']);  
-  let number1 = rlSync.question();
-
-  while (invalidNumber(number1)) {
-    prompt(MESSAGES[language]['invalidNumber']);
-    number1 = rlSync.question();
-  }
-  return number1;
-}
-
-function getSecondNumber() {
-  prompt(MESSAGES[language]['secondNumber']);
-  let number2 = rlSync.question();
-
-  while (invalidNumber(number2)) {
-    prompt(MESSAGES[language]['invalidNumber']);
-    number2 = rlSync.question();
-  }
-  return number2;
-}
-
-function invalidNumber(number) {
-  return number.trimStart() === '' || Number.isNaN(Number(number));
-}
-
-function validateLanguage(language) {
-  switch (language) {
+function isValidLanguage(lang) {
+  switch (lang) {
     case 'en': return true;
     case 'es': return true;
     default: return false;
   }
 }
 
-function calculations(operation, number1, number2) {
-  switch (operation) {
-    case 1: return Number(number1) + Number(number2);
-    case 2: return Number(number1) - Number(number2);
-    case 3: return Number(number1) * Number(number2);
-    case 4: return Number(number1) / Number(number2);
+function getNum(num) {
+  prompt(MESSAGES[language][num]);
+  let number = rlSync.question();
+
+  while (isInvalidNumber(number)) {
+    prompt(MESSAGES[language]['invalidNum']);
+    number = rlSync.question();
   }
+  return number;
 }
 
-function chooseOperation(language, number2) {
-  prompt(MESSAGES[language]['operations']);
-  let operation = Number(rlSync.question());
+function isInvalidNumber(num) {
+  return num.trimStart() === 0 || Number.isNaN(Number(num));
+}
 
-  while (![1, 2, 3, 4].includes(operation)) {
-    prompt(MESSAGES[language]['invalidOperations']);
-    operation = Number(rlSync.question());
-  }
-  while (operation === 4 && number2 === '0') {
-    prompt(MESSAGES[language]['invalidDivision']);
-    operation = Number(rlSync.question());
+function getOperation() {
+  prompt(MESSAGES[language]['operation']);
+  let operation = rlSync.question();
+
+  while (!['1', '2', '3', '4'].includes(operation)) {
+    prompt(MESSAGES[language]['invalidOperation']);
+    operation = rlSync.question();
   }
   return operation;
 }
 
-function convertOperation(operation) {
-  switch (operation) {
-    case 1: return '+';
-    case 2: return '-';
-    case 3: return 'x';
-    case 4: return '/';
+function divisionError(operation) {
+  while (!['1', '2', '3'].includes(operation)) {
+    prompt(MESSAGES[language]['invalidDivision']);
+    operation = rlSync.question();
   }
+  return operation;
 }
 
-let answer;
+function getOutput(number1, number2, operation) {
+  switch (operation) {
+    case ('1'): return Number(number1) + Number(number2);
+    case ('2'): return Number(number1) - Number(number2);
+    case ('3'): return Number(number1) * Number(number2);
+    case ('4'): return Math.floor(Number(number1) / Number(number2));
+  }
+  return undefined;
+}
 
-// initial code
+function validateAnswer() {
+  prompt(MESSAGES[language]['anotherOperation']);
+  let answer = rlSync.question().toLowerCase();
+
+  while (!['y', 'yes', 'n', 'no'].includes(answer)) {
+    prompt(MESSAGES[language]['invalidAnswer']);
+    answer = rlSync.question();
+  }
+  return answer;
+}
+// ------------- main body
+
 console.clear();
 
-let language = chooseLanguage();
+language = chooseLanguage();
 
 console.clear();
 
-// main code
 prompt(MESSAGES[language]['welcome']);
 
-do {
+while (true) {
 
-  let number1 = getFirstNumber()
+  let number1 = getNum('firstNum');
   console.clear();
 
-  let number2 = getSecondNumber();
+  let number2 = getNum('secondNum');
   console.clear();
 
-  let operation = chooseOperation(language, number2);
+  let operation = getOperation();
 
-  console.clear();
+  if (number2 === '0' && operation === '4') {
+    operation = divisionError(operation);
+  }
 
-  let output = calculations(operation, number1, number2);
+  let output = getOutput(number1, number2, operation);
 
-  prompt(`${number1} ${convertOperation(operation)} ${number2} = ${output}`);
+  prompt(`${MESSAGES[language]['output']} ${output}.`);
 
-  answer = rlSync.question(prompt(MESSAGES[language]["anotherCalculation"]));
+  let answer = validateAnswer();
+  if (answer === 'n' || answer === 'no') break;
+}
 
-} while (answer === 'y' || answer === 'yes');
-
-console.clear();
 prompt(MESSAGES['thankYou']);

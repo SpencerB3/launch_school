@@ -1,27 +1,29 @@
 {
   "language": "Type 'en' for English -- Oprime 'es' por Espanol",
   "invalidLanguage": "Not valid. Try again -- No es valido.  Intentalo de nuevo",
-
   "en": {
     "welcome": "Welcome to Calculator!",
-    "firstNumber": "What's your first number?",
-    "secondNumber": "What's the second number?",
-    "invalidNumber": "Invalid number.  Try again",
-    "operations": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
-    "invalidOperations": "Must choose 1, 2, 3, or 4",
-    "invalidDivision": "Invalid. '0' cannot be a divisor. Choose another operator",
-    "anotherCalculation": "Would you like to do another calculation?\nType 'y' to continue. Type anything else to exit the program.",
-    "thankYou": "Thank you for using Calculator.  Good-bye!"
+    "firstNum": "What is the first number?",
+    "secondNum": "What is the second number?",
+    "invalidNum": "Hmm... that doesn't look like a valid number -- Try again!",
+    "operation": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+    "invalidOperations": "Please enter 1, 2, 3, or 4",
+    "output": "The result is",
+    "invalidDivision": "Invalid. '0' cannot be a divisor. Choose another operator:",
+    "anotherOperation": "Would you like to perform another calculation? Type Y for yes, N for No",
+    "invalidAnswer": "Invalid answer.  Please type 'y' or 'n'."
   },
   "es": {
     "welcome": "Bienvenidos a Calculadora!",
-    "firstNumber": "Cual es tu primer numero?",
-    "secondNumber": "Cual es tu segundo numero?",
+    "firstNum": "Cual es tu primer numero?",
+    "secondNum": "Cual es tu segundo numero?",
     "invalidNumber": "Hmm, no parece un numero valido. Intentalo de nuevo",
-    "operations": "Cual operacion quiere hacer?\n1) Añadir 2) Sustraer 3) Multiplicar 4) Dividir",
+    "operation": "Cual operacion quiere hacer?\n1) Añadir 2) Sustraer 3) Multiplicar 4) Dividir",
     "invalidOperations": "Debe escoger 1, 2, 3, o 4",
-    "invalidDivision": "Invalido. '0' no puede ser un divisor. Escoge otra operacion",
-    "anotherCalculation": "Quiere hacer otra operation? Oprima 'y' para continuar. Oprima qualquier otra respuesta para salir del programa."
+    "output": "El resultado es",
+    "invalidDivision": "Invalido. '0' no puede ser un divisor. Escoge otra operacion:",
+    "anotherOperation": "Quiere hacer otra operation? Oprima 'y' para continuar, 'n' para salir del programa.",
+    "invalidAnswer": "Respuesta invalida.  Oprime 'y' o 'n'."
   },
   "thankYou": "Thank you - Good-bye! -- Gracias - Adios!"
 }
