@@ -6,7 +6,7 @@
   "invalidapr": "Please enter a valid number as an annual interest rate:",
   "loanDuration": "Please enter your loan duration in years",
   "invalidloanDuration": "Please enter a valid number as a loan duration (positive whole numbers only):",
-  "wholeNumbers": "Only positive whole numbers for loan duration, no decimel points.",
+  "wholeNumbers": "Only positive whole numbers for loan duration, no decimal points.",
   "answer": "Would you like to calculate another loan?\nType 'y' for yes, 'n' for no:",
   "invalidanswer": "Invalid input - Please type 'y' to calculate another loan, or 'n' to exit the program:",
   "thankYou": "Thank you for using Loan Calculator!"
