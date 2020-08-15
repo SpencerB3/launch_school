@@ -70,6 +70,7 @@ while (true) {
   let answer = retrieveInput('answer', isInvalidAnswer).toLowerCase();
 
   if (answer[0] === 'n' || answer === 'no') break;
+  console.clear();
 }
 
 console.clear();
