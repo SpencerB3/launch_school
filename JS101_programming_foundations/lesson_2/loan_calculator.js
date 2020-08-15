@@ -9,66 +9,37 @@ function prompt(message) {
 
 function isInvalidNumber(num) {
   return num.trim() === 0 ||
-    Number.isNaN(Number(num)) ||
-    Number(num) <= 0;
+  Number.isNaN(Number(num)) ||
+  Number(num) < 0;
 }
 
-function isNotWholeNumber(num) {
-  if (Number(num) - Math.floor(Number(num)) !== 0) {
-    return true;
-  } else {
-    return false;
+let retrieveInput = (inputType, isInvalidInput) => {
+  prompt(MESSAGES[inputType]);
+  let input = rlSync.question();
+  while (isInvalidInput(input)) {
+    prompt(MESSAGES[`invalid${inputType}`]);
+    input = rlSync.question();
   }
-}
+  return input;
+};
 
-function getLoanAmount() {
-  prompt(MESSAGES['loanAmount']);
-  let loan = rlSync.question();
-
-  while (isInvalidNumber(loan)) {
-    prompt(MESSAGES['invalidNum']);
-    loan = rlSync.question();
+function getLoanLength(loanDuration, isInvalidNumber) {
+  let input = retrieveInput(loanDuration, isInvalidNumber);
+  while ((Number(input) - Math.floor(Number(input)) !== 0) ||
+  Number(input) === 0) {
+    prompt(MESSAGES['wholeNumbers']);
+    input = retrieveInput(loanDuration, isInvalidNumber);
   }
-  return Number(loan);
-}
-
-function getAnnualInterestRate() {
-  prompt(MESSAGES['getAPR']);
-  let annualInterestRate = rlSync.question();
-
-  while (isInvalidNumber(annualInterestRate)) {
-    prompt(MESSAGES['invalidAPR']);
-    annualInterestRate = rlSync.question();
-  }
-  return Number(annualInterestRate);
-}
-
-function getLoanDurationYears() {
-  prompt(MESSAGES['loanDuration']);
-  let loanDurationYears = rlSync.question();
-
-  while (isInvalidNumber(loanDurationYears) ||
-    isNotWholeNumber(loanDurationYears)) {
-    prompt(MESSAGES['invalidLoanDuration']);
-    loanDurationYears = rlSync.question();
-  }
-  return Number(loanDurationYears);
+  return input;
 }
 
 function calculatePayment(loan, monthlyInterestRate, loanDurationMonths) {
   return (loan * (monthlyInterestRate /
-    (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationMonths)))));
+  (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationMonths)))));
 }
 
-function getAnotherCalculation() {
-  prompt(MESSAGES['anotherCalculation']);
-  let answer = rlSync.question().toLowerCase();
-
-  while (!['y', 'yes', 'n', 'no'].includes(answer)) {
-    prompt(MESSAGES['invalidAnswer']);
-    answer = rlSync.question();
-  }
-  return answer;
+function isInvalidAnswer(answer) {
+  return (!['y', 'yes', 'n', 'no'].includes(answer.toLowerCase()));
 }
 
 // -----------main code-------------
@@ -78,25 +49,25 @@ prompt(MESSAGES['welcome']);
 
 while (true) {
 
-  let loan = getLoanAmount();
+  let loan = Number(retrieveInput('loanAmount', isInvalidNumber));
   console.clear();
 
-  let annualInterestRate = getAnnualInterestRate();
+  let apr = Number(retrieveInput('apr', isInvalidNumber));
   console.clear();
 
-  let loanDurationYears = getLoanDurationYears();
+  let loanDurationYear = Number(getLoanLength('loanDuration', isInvalidNumber));
   console.clear();
 
-  let monthlyInterestRate = ((annualInterestRate / 100) / MONTHS_PER_YEAR);
+  let monthlyInterestRate = ((apr / 100) / MONTHS_PER_YEAR);
 
-  let loanDurationMonths = loanDurationYears * MONTHS_PER_YEAR;
+  let loanDurationMonths = loanDurationYear * MONTHS_PER_YEAR;
 
   let monthlyPayment = calculatePayment(loan, monthlyInterestRate,
     loanDurationMonths);
 
   prompt(`Your monthly payment is $${monthlyPayment.toFixed(2)}.`);
 
-  let answer = getAnotherCalculation();
+  let answer = retrieveInput('answer', isInvalidAnswer).toLowerCase();
 
   if (answer[0] === 'n' || answer === 'no') break;
 }

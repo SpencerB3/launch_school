@@ -1,12 +1,13 @@
 {
   "welcome": "Welcome to Loan Calculator!",
   "loanAmount": "Please enter your loan amount:",
-  "invalidNum": "Please enter a valid number as a loan amount (positive numbers only):",
-  "getAPR": "Please enter your Annual Percentage Rate \n- Example '5' for 5%, '10' for 10%",
-  "invalidAPR": "Please enter a valid number as an annual interest rate (positive numbers only):",
+  "invalidloanAmount": "Please enter a valid number as a loan amount:",
+  "apr": "Please enter your Annual Percentage Rate \n- Example '5' for 5%, '10' for 10%",
+  "invalidapr": "Please enter a valid number as an annual interest rate:",
   "loanDuration": "Please enter your loan duration in years",
-  "invalidLoanDuration": "Please enter a valid number as a loan duration (positive whole numbers only):",
-  "anotherCalculation": "Would you like to calculate another loan?\nType 'y' for yes, 'n' for no:",
-  "invalidAnswer": "Invalid input - Please type 'y' to calculate another loan, or 'n' to exit the program:",
+  "invalidloanDuration": "Please enter a valid number as a loan duration (positive whole numbers only):",
+  "wholeNumbers": "Only positive whole numbers for loan duration, no decimel points.",
+  "answer": "Would you like to calculate another loan?\nType 'y' for yes, 'n' for no:",
+  "invalidanswer": "Invalid input - Please type 'y' to calculate another loan, or 'n' to exit the program:",
   "thankYou": "Thank you for using Loan Calculator!"
 }
