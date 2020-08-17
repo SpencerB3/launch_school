@@ -1,0 +1,9 @@
+{
+  "greeting": "Welcome to Rock, Paper, Scissors!",
+  "goodbye": "Thank you for playing Rock, Paper, Scissors!",
+  "matchConditions": "Best of 5 wins the Match!",
+  "retrieveHand": "Please type:\n 'r' for rock,\n 's' for scissors,\n 'p' for paper,\n 'l' for lizard,\n 'v' for spock",
+  "playRound": "Do you want to play another round? (y/n)",
+  "playMatch": "Do you want to play another match of best of 5? (y/n)",
+  "invalidChoice": "That's not a valid choice."
+}

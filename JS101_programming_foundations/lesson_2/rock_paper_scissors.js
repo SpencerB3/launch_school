@@ -1,97 +1,131 @@
 const rlSync = require('readline-sync');
-const VALID_CHOICES = {
-  r: 'rock', p: 'paper', s: 'scissors', l: 'lizard',
+const MESSAGES = require('./rock_paper_scissors_messages.json');
+const VALID_CHOICES = { r: 'rock', p: 'paper', s: 'scissors', l: 'lizard',
   v: 'spock'
 };
+const VALID_ANSWERS = ['y', 'yes', 'n', 'no'];
 const WINNING_MATCH_NUM = 5;
-let playerWins = 0;
-let computerWins = 0;
+const SCORE = { player: 0, computer: 0 };
+const WINNING_HANDS = { rock: ['scissors', 'lizard'], paper: ['rock', 'spock'],
+  scissors: ['paper', 'lizard'], lizard: ['paper', 'spock'],
+  spock: ['rock', 'scissors'] };
 
 function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function displayWinner(choice, computerChoice) {
-  prompt(`You chose ${choice}, computer chose ${computerChoice}.`);
+let retrieveChoice = () => {
+  let choice = VALID_CHOICES[rlSync.question().toLowerCase()];
 
-  if ((choice === 'rock' && computerChoice === 'scissors') ||
-    (choice === 'scissors' && computerChoice === 'paper') ||
-    (choice === 'paper' && computerChoice === 'rock') ||
-    (choice === 'rock' && computerChoice === 'lizard') ||
-    (choice === 'scissors' && computerChoice === 'lizard') ||
-    (choice === 'lizard' && computerChoice === 'paper') ||
-    (choice === 'lizard' && computerChoice === 'spock') ||
-    (choice === 'spock' && computerChoice === 'rock') ||
-    (choice === 'spock' && computerChoice === 'scissors') ||
-    (choice === 'paper' && computerChoice === 'spock')) {
+  while (!Object.values(VALID_CHOICES).includes(choice)) {
+    prompt(MESSAGES['invalidChoice']);
+    choice = VALID_CHOICES[rlSync.question().toLowerCase()];
+  }
+  return choice;
+};
+
+let retrieveRandomIndex = () =>  {
+  return Math.floor(Math.random() * Object.values(VALID_CHOICES).length);
+};
+
+let retrieveComputerChoice = (index) => Object.values(VALID_CHOICES)[index];
+
+function displayWinner(winner, choice, computerChoice) {
+  if (winner === choice) {
     prompt('You win!');
-    return choice;
-  } else if ((computerChoice === 'rock' && choice === 'scissors') ||
-    (computerChoice === 'scissors' && choice === 'paper') ||
-    (computerChoice === 'paper' && choice === 'rock') ||
-    (computerChoice === 'rock' && choice === 'lizard') ||
-    (computerChoice === 'scissors' && choice === 'lizard') ||
-    (computerChoice === 'lizard' && choice === 'paper') ||
-    (computerChoice === 'lizard' && choice === 'spock') ||
-    (computerChoice === 'spock' && choice === 'rock') ||
-    (computerChoice === 'spock' && choice === 'scissors') ||
-    (computerChoice === 'paper' && choice === 'spock')) {
+  } else if (winner === computerChoice) {
     prompt('Computer wins!');
-    return computerChoice;
   } else {
     prompt("It's a tie!");
   }
 }
 
+function retrieveRoundWinner(player1, player2) {
+  if (WINNING_HANDS[player1].includes(player2)) {
+    return player1;
+  } else if (WINNING_HANDS[player2].includes(player1)) {
+    return player2;
+  }
+  return undefined;
+}
+
+let updateScore = (winner, choice, computerChoice) => {
+  if (winner === choice) {
+    SCORE.player += 1;
+  } else if (winner === computerChoice) {
+    SCORE.computer += 1;
+  }
+};
+
+let retrieveMatchWinner = () => {
+  if (SCORE.player === WINNING_MATCH_NUM) {
+    prompt(`CONGRATS - YOU WON THE MATCH!`);
+    return true;
+  } else if (SCORE.computer === WINNING_MATCH_NUM) {
+    prompt(`The computer has won the match!`);
+    return true;
+  }
+  return undefined;
+};
+
+let retrieveAnswer = () => {
+  let answer = rlSync.question().toLowerCase();
+  while (isInvalidAnswer(answer)) {
+    prompt("Please enter 'y' or 'n'.");
+    answer = rlSync.question().toLowerCase();
+  }
+  return answer;
+};
+
+function isInvalidAnswer(answer) {
+  return (!VALID_ANSWERS.includes(answer.toLowerCase()));
+}
+
+let resetScore = () => {
+  SCORE.player = 0;
+  SCORE.computer = 0;
+};
+// ------- main code ----------
+
 console.clear();
-prompt('Welcome to Rock, Paper, Scissors!');
+prompt(MESSAGES['greeting']);
 
 while (true) {
 
   while (true) {
-    prompt(`Score: Player: ${playerWins} -- Computer: ${computerWins}`);
-    prompt('Best of 5 Rounds Wins the Match!')
-    prompt(`Please type:\n 'r' for rock,\n 's' for scissors,\n 'p' for paper,\n` +
-      ` 'l' for lizard,\n 'v' for spock`);
-    let choice = VALID_CHOICES[rlSync.question()].toLowerCase();
+    prompt(MESSAGES['matchConditions']);
+    prompt(`Score: Player: ${SCORE.player} -- Computer: ${SCORE.computer}`);
+    prompt(MESSAGES['retrieveHand']);
 
-    while (!Object.values(VALID_CHOICES).includes(choice)) {
-      prompt("That's not a valid choice.");
-      choice = VALID_CHOICES[rlSync.question()].toLowerCase();
-    }
+    let choice = retrieveChoice();
+    console.clear();
 
-    let randomIndex = Math.floor(Math.random() *
-      Object.values(VALID_CHOICES).length);
-    let computerChoice = Object.values(VALID_CHOICES)[randomIndex];
+    let randomIndex = retrieveRandomIndex();
 
-    let winner = displayWinner(choice, computerChoice);
+    let computerChoice = retrieveComputerChoice(randomIndex);
 
-    if (winner === choice) {
-      playerWins += 1;
-    } else if (winner === computerChoice) {
-      computerWins += 1;
-    }
+    prompt(`You chose ${choice}, computer chose ${computerChoice}.`);
 
-    prompt(`Updated Score:  Player ${playerWins} -- Computer ${computerWins}`);
-    prompt('Do you want to play another round? (y/n)');
-    let answer = rlSync.question().toLowerCase();
-    while (answer[0] !== 'n' && answer !== 'y') {
-      prompt("Please enter 'y' or 'n'.");
-      answer = rlSync.question().toLowerCase();
-    }
+    let winner = retrieveRoundWinner(choice, computerChoice);
+    displayWinner(winner, choice, computerChoice);
+    updateScore(winner, choice, computerChoice);
+
+    if (retrieveMatchWinner()) break;
+
+    prompt(`Updated Score:  Player ${SCORE.player} -- Computer ${SCORE.computer}`); // problem
+    prompt(MESSAGES['playRound']);
+
+    let answer = retrieveAnswer();
 
     console.clear();
     if (answer[0] === 'n') break;
+  }
+  prompt(MESSAGES['playMatch']);
+  let answer = retrieveAnswer();
 
-  }
-  prompt('Do you want to play another match of best of 5? (y/n)');
-  let answer = rlSync.question().toLowerCase();
-  while (answer[0] !== 'n' && answer !== 'y') {
-    prompt("Please enter 'y' or 'n'.");
-    answer = rlSync.question().toLowerCase();
-  }
   console.clear();
   if (answer[0] === 'n') break;
+  resetScore();
 }
 
-prompt('Thank you for playing Rock, Paper, Scissors!');
+prompt(MESSAGES['goodbye']);
