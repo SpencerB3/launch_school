@@ -5,10 +5,11 @@ const VALID_CHOICES = { r: 'rock', p: 'paper', s: 'scissors', l: 'lizard',
 };
 const VALID_ANSWERS = ['y', 'yes', 'n', 'no'];
 const WINNING_MATCH_NUM = 5;
-const SCORE = { player: 0, computer: 0 };
 const WINNING_HANDS = { rock: ['scissors', 'lizard'], paper: ['rock', 'spock'],
   scissors: ['paper', 'lizard'], lizard: ['paper', 'spock'],
   spock: ['rock', 'scissors'] };
+
+let SCORE = { player: 0, computer: 0 };
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -59,10 +60,8 @@ let updateScore = (winner, choice, computerChoice) => {
 
 let retrieveMatchWinner = () => {
   if (SCORE.player === WINNING_MATCH_NUM) {
-    prompt(`CONGRATS - YOU WON THE MATCH!`);
     return true;
   } else if (SCORE.computer === WINNING_MATCH_NUM) {
-    prompt(`The computer has won the match!`);
     return true;
   }
   return undefined;
@@ -77,6 +76,11 @@ let retrieveAnswer = () => {
   return answer;
 };
 
+let continueMatch = () => {
+  let answer = rlSync.question().toLowerCase();
+  return answer === 'q' ? false : true;
+}
+
 function isInvalidAnswer(answer) {
   return (!VALID_ANSWERS.includes(answer.toLowerCase()));
 }
@@ -85,6 +89,8 @@ let resetScore = () => {
   SCORE.player = 0;
   SCORE.computer = 0;
 };
+
+let isAnswerNo = answer => answer[0] === 'n';
 // ------- main code ----------
 
 console.clear();
@@ -110,21 +116,27 @@ while (true) {
     displayWinner(winner, choice, computerChoice);
     updateScore(winner, choice, computerChoice);
 
-    if (retrieveMatchWinner()) break;
+    if (retrieveMatchWinner() === SCORE.player) {
+      prompt(MESSAGES['playerWon']);
+      break;
+    } else if (retrieveMatchWinner() === SCORE.computer) {
+      prompt(MESSAGES['computerWon']);
+      break;
+    }
 
-    prompt(`Updated Score:  Player ${SCORE.player} -- Computer ${SCORE.computer}`); // problem
+    prompt(`Updated Score:  Player ${SCORE.player} -- Computer ${SCORE.computer}`);
+    
     prompt(MESSAGES['playRound']);
+    let answer = continueMatch();
 
-    let answer = retrieveAnswer();
-
+    if (!answer) break;
     console.clear();
-    if (answer[0] === 'n') break;
   }
   prompt(MESSAGES['playMatch']);
   let answer = retrieveAnswer();
 
   console.clear();
-  if (answer[0] === 'n') break;
+  if (isAnswerNo(answer)) break;
   resetScore();
 }
 

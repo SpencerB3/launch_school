@@ -3,7 +3,9 @@
   "goodbye": "Thank you for playing Rock, Paper, Scissors!",
   "matchConditions": "Best of 5 wins the Match!",
   "retrieveHand": "Please type:\n 'r' for rock,\n 's' for scissors,\n 'p' for paper,\n 'l' for lizard,\n 'v' for spock",
-  "playRound": "Do you want to play another round? (y/n)",
+  "playRound": "Press return, Q to quit",
   "playMatch": "Do you want to play another match of best of 5? (y/n)",
-  "invalidChoice": "That's not a valid choice."
+  "invalidChoice": "That's not a valid choice.",
+  "playerWon": "CONGRATS - YOU WON THE MATCH!",
+  "computerWon": "The computer has won the match!"
 }
