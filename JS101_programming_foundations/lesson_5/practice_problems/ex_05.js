@@ -7,3 +7,23 @@ let munsters = {
   Eddie: { age: 10, gender: 'male' },
   Marilyn: { age: 23, gender: 'female' }
 };
+
+// let sum = 0;
+
+// for (let key in munsters) {
+//   if (munsters[key]['gender'] === 'male') {
+//     sum += munsters[key]['age'];
+//   }
+// }
+
+// console.log(sum);
+
+
+let sum = Object.values(munsters).reduce((sum, info) => {
+  if (info['gender'] === 'male') {
+    sum += info['age'];
+  }
+  return sum;
+}, 0)
+
+console.log(sum);
