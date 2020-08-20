@@ -7,4 +7,7 @@ let obj = {
   fourth: ['over', 'the', 'lazy', 'dog'],
 };
 
-
+Object.values(obj).forEach(arr => {
+  let matches = arr.join(' ').match(/[aeiou]/gi) || false;
+  if (matches) matches.forEach(char => console.log(char));
+});
