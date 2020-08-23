@@ -1,17 +1,19 @@
 const rlSync = require('readline-sync');
-let prompt = (message) => console.log(`=> ${message}`);
+const MESSAGES = require('./tictactoe_messages.json');
 
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
-const WINNING_MATCH_NUM = 5;
+const WINNING_MATCH = 5;
 const WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8],
-[3, 6, 9], [1, 5, 9], [3, 5, 7]];
+  [3, 6, 9], [1, 5, 9], [3, 5, 7]];
 const SQUARE_FIVE = 5;
 const FIRST_MOVE = ['Player', 'Computer'];
+const VALID_ANSWERS = ['y', 'yes', 'n', 'no'];
+
+let prompt = (message) => console.log(`=> ${message}`);
 
 function displayBoard(board, score1, score2) {
-  console.clear();
 
   console.log(`You are ${HUMAN_MARKER}.  The computer is ${COMPUTER_MARKER}.`);
   console.log(`Your score is ${score1} -- Computer score is ${score2}`);
@@ -48,7 +50,7 @@ function playerChoosesSquare(board) {
 
     if (emptySquares(board).includes(square)) break;
 
-    prompt("That's not a valid choice.");
+    prompt(MESSAGES['invalidChoice']);
   }
 
   board[square] = HUMAN_MARKER;
@@ -57,7 +59,7 @@ function playerChoosesSquare(board) {
 function computerChoosesSquare(board) {
   let square;
 
-  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
+  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) { 
     let line = WINNING_LINES[idx];
     square = findAtRiskSquare(line, board, COMPUTER_MARKER);
     if (square) break;
@@ -70,7 +72,7 @@ function computerChoosesSquare(board) {
       if (square) break;
     }
   }
-  
+
   if (!square && board[SQUARE_FIVE] === ' ') {
     square = SQUARE_FIVE;
   }
@@ -136,65 +138,88 @@ function findAtRiskSquare(line, board, marker) {
   return null;
 }
 
-// function firstMove(first, board) {
-//   first === 'Player' ? playerChoosesSquare(board) : computerChoosesSquare(board);
-// }
+function chooseSquare(board, currentPlayer) {
+  return currentPlayer === 'Player' ? playerChoosesSquare(board) :
+    computerChoosesSquare(board);
+}
 
-// function secondMove(first, board) {
-//   first === 'Player' ? computerChoosesSquare(board) : playerChoosesSquare(board);
-// }
+function alternatePlayer(currentPlayer) {
+  return currentPlayer === 'Player' ? 'Computer' : 'Player';
+}
 
 function retrieveFirstPlayer() {
-  let randomIndex = Math.floor(Math.random() * 2);
-  return FIRST_MOVE[randomIndex];
+  let answer = rlSync.question().toLowerCase();
+  while (isInvalidAnswer(answer)) {
+    prompt(MESSAGES['invalidChoice']);
+    answer = rlSync.question().toLowerCase();
+  }
+  let firstMove = answer[0] === 'y' ? '0' : '1';
+  return FIRST_MOVE[firstMove];
+}
+
+function retrieveAnswer() {
+  let answer = rlSync.question().toLowerCase;
+  if (isInvalidAnswer(answer)) {
+    prompt(MESSAGES['invalidChoice']);
+    answer = rlSync.question().toLowerCase();
+  }
+  return answer;
+}
+
+function isInvalidAnswer(answer) {
+  return !VALID_ANSWERS.includes(answer);
 }
 
 // ---------main code-----------
 
-prompt('Welcome to Tic Tac Toe.  First to win 5 rounds wins the match!')
+console.clear();
+prompt(MESSAGES['welcome']);
 
 while (true) {
   let playerScore = 0;
   let computerScore = 0;
-  let firstPlayer = retrieveFirstPlayer();
+
+  prompt(MESSAGES['firstPlayer']);
+  let currentPlayer = retrieveFirstPlayer();
+  console.clear();
 
   while (true) {
     let board = initializeBoard();
 
     while (true) {
+      console.clear();
       displayBoard(board, playerScore, computerScore);
-
-      // firstMove(firstGo, board);
-      playerChoosesSquare(board);
-      if (someoneWon(board) || boardFull(board)) break;
-
-      // secondMove(firstGo, board);
-      computerChoosesSquare(board);
+      chooseSquare(board, currentPlayer);
+      currentPlayer = alternatePlayer(currentPlayer);
       if (someoneWon(board) || boardFull(board)) break;
     }
+
+    console.clear();
     displayBoard(board, playerScore, computerScore);
 
     if (someoneWon(board)) {
       detectWinner(board) === 'Player' ? playerScore += 1 : computerScore += 1;
       prompt(`${detectWinner(board)} won!`);
     } else {
-      prompt("It's a tie!");
+      prompt(MESSAGES['tie']);
     }
 
-    if (playerScore === WINNING_MATCH_NUM || computerScore === WINNING_MATCH_NUM) {
+    if (playerScore === WINNING_MATCH || computerScore === WINNING_MATCH) {
       prompt(`${detectWinner(board)} has won the match!`);
       break;
     }
-   
-    prompt('Press any key to continue, Q to quit');
-    let answer = rlSync.question().toLowerCase();
-    if (answer[0] === 'q') break
+
+    prompt(MESSAGES['continue']);
+    let anotherMatch = rlSync.question().toLowerCase();
+    if (anotherMatch[0] === 'q') break;
   }
 
-  prompt('Play another match? (y or n)');
-  let answer = rlSync.question();
+  prompt(MESSAGES['anotherMatch']);
+  let answer = retrieveAnswer();
   if (answer[0] !== 'y') break;
+  
+  console.clear();
 }
 
 console.clear();
-prompt('Thank you for playing Tic Tac Toe!');
+prompt(MESSAGES['thankYou']);
