@@ -104,7 +104,7 @@ function joinOr(array, delimiter = ",", word = 'or') {
     case 0: return '';
     case 1: return `${array[0]}`;
     case 2: return `${array[0]} ${word} ${array[1]}`;
-    default: return `${array.slice(0, array.length - 1).join(`${delimiter} `)}` +
+    default: return `${array.slice(0, array.length - 1).join(`${delimiter} `)},` +
       ` ${word} ${array[array.length - 1]}`;
   }
 }
