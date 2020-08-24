@@ -10,13 +10,14 @@ const WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8],
 const SQUARE_FIVE = 5;
 const FIRST_MOVE = ['Player', 'Computer'];
 const VALID_ANSWERS = ['y', 'yes', 'n', 'no'];
+let scores = { player: 0, computer: 0 };
 
 let prompt = (message) => console.log(`=> ${message}`);
 
-function displayBoard(board, score1, score2) {
+function displayBoard(board, scores) {
 
   console.log(`You are ${HUMAN_MARKER}.  The computer is ${COMPUTER_MARKER}.`);
-  console.log(`Your score is ${score1} -- Computer score is ${score2}`);
+  console.log(`Player: ${scores.player} -- Computer: ${scores.computer}`);
 
   console.log('');
   console.log('     |     |');
@@ -57,20 +58,10 @@ function playerChoosesSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  let square;
-
-  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) { 
-    let line = WINNING_LINES[idx];
-    square = findAtRiskSquare(line, board, COMPUTER_MARKER);
-    if (square) break;
-  }
+  let square = findOffenseSquare(board);
 
   if (!square) {
-    for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
-      let line = WINNING_LINES[idx];
-      square = findAtRiskSquare(line, board, HUMAN_MARKER);
-      if (square) break;
-    }
+    square = findDefenseSquare(board);
   }
 
   if (!square && board[SQUARE_FIVE] === ' ') {
@@ -82,6 +73,26 @@ function computerChoosesSquare(board) {
     square = emptySquares(board)[randomIndex];
   }
   board[square] = COMPUTER_MARKER;
+}
+
+function findOffenseSquare(board) {
+  let square;
+  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
+    let line = WINNING_LINES[idx];
+    square = findAtRiskSquare(line, board, COMPUTER_MARKER);
+    if (square) break;
+  }
+  return square;
+}
+
+function findDefenseSquare(board) {
+  let square;
+  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
+    let line = WINNING_LINES[idx];
+    square = findAtRiskSquare(line, board, HUMAN_MARKER);
+    if (square) break;
+  }
+  return square;
 }
 
 function emptySquares(board) {
@@ -158,7 +169,7 @@ function retrieveFirstPlayer() {
 }
 
 function retrieveAnswer() {
-  let answer = rlSync.question().toLowerCase;
+  let answer = rlSync.question().toLowerCase();
   if (isInvalidAnswer(answer)) {
     prompt(MESSAGES['invalidChoice']);
     answer = rlSync.question().toLowerCase();
@@ -170,14 +181,23 @@ function isInvalidAnswer(answer) {
   return !VALID_ANSWERS.includes(answer);
 }
 
+function updateScore(board, scores) {
+  if (detectWinner(board) === 'Player') {
+    scores.player += 1;
+    return scores;
+  } else {
+    scores.computer += 1;
+    return scores;
+  }
+}
+
 // ---------main code-----------
 
 console.clear();
 prompt(MESSAGES['welcome']);
 
 while (true) {
-  let playerScore = 0;
-  let computerScore = 0;
+  scores = { player: 0, computer: 0 };
 
   prompt(MESSAGES['firstPlayer']);
   let currentPlayer = retrieveFirstPlayer();
@@ -188,36 +208,36 @@ while (true) {
 
     while (true) {
       console.clear();
-      displayBoard(board, playerScore, computerScore);
+      displayBoard(board, scores);
       chooseSquare(board, currentPlayer);
       currentPlayer = alternatePlayer(currentPlayer);
       if (someoneWon(board) || boardFull(board)) break;
     }
 
     console.clear();
-    displayBoard(board, playerScore, computerScore);
+    displayBoard(board, scores);
 
     if (someoneWon(board)) {
-      detectWinner(board) === 'Player' ? playerScore += 1 : computerScore += 1;
+      scores = updateScore(board, scores);
       prompt(`${detectWinner(board)} won!`);
     } else {
       prompt(MESSAGES['tie']);
     }
 
-    if (playerScore === WINNING_MATCH || computerScore === WINNING_MATCH) {
+    if (scores.player === WINNING_MATCH || scores.computer === WINNING_MATCH) {
       prompt(`${detectWinner(board)} has won the match!`);
       break;
     }
 
     prompt(MESSAGES['continue']);
-    let anotherMatch = rlSync.question().toLowerCase();
-    if (anotherMatch[0] === 'q') break;
+    let anotherRound = rlSync.question().toLowerCase();
+    if (anotherRound[0] === 'q') break;
   }
 
   prompt(MESSAGES['anotherMatch']);
   let answer = retrieveAnswer();
   if (answer[0] !== 'y') break;
-  
+
   console.clear();
 }
 
