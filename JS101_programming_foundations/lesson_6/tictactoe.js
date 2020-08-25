@@ -2,21 +2,22 @@ const rlSync = require('readline-sync');
 const MESSAGES = require('./tictactoe_messages.json');
 
 const INITIAL_MARKER = ' ';
-const HUMAN_MARKER = 'X';
+const PLAYER_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const WINNING_MATCH = 5;
 const WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8],
   [3, 6, 9], [1, 5, 9], [3, 5, 7]];
 const SQUARE_FIVE = 5;
-const FIRST_MOVE = ['Player', 'Computer'];
+const PLAYERS = ['Player', 'Computer'];
 const VALID_ANSWERS = ['y', 'yes', 'n', 'no'];
 let scores = { player: 0, computer: 0 };
+let winner;
 
 let prompt = (message) => console.log(`=> ${message}`);
 
 function displayBoard(board, scores) {
 
-  console.log(`You are ${HUMAN_MARKER}.  The computer is ${COMPUTER_MARKER}.`);
+  console.log(`You are ${PLAYER_MARKER}.  The computer is ${COMPUTER_MARKER}.`);
   console.log(`Player: ${scores.player} -- Computer: ${scores.computer}`);
 
   console.log('');
@@ -54,14 +55,14 @@ function playerChoosesSquare(board) {
     prompt(MESSAGES['invalidChoice']);
   }
 
-  board[square] = HUMAN_MARKER;
+  board[square] = PLAYER_MARKER;
 }
 
 function computerChoosesSquare(board) {
-  let square = findOffenseSquare(board);
+  let square = retrieveSquare(board, COMPUTER_MARKER);
 
   if (!square) {
-    square = findDefenseSquare(board);
+    square = retrieveSquare(board, PLAYER_MARKER);
   }
 
   if (!square && board[SQUARE_FIVE] === ' ') {
@@ -69,29 +70,25 @@ function computerChoosesSquare(board) {
   }
 
   if (!square) {
-    let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-    square = emptySquares(board)[randomIndex];
+    square = findRandomSquare(board);
   }
   board[square] = COMPUTER_MARKER;
 }
 
-function findOffenseSquare(board) {
+function retrieveSquare(board, marker) {
   let square;
   for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
     let line = WINNING_LINES[idx];
-    square = findAtRiskSquare(line, board, COMPUTER_MARKER);
+    square = findAtRiskSquare(line, board, marker);
     if (square) break;
   }
   return square;
 }
 
-function findDefenseSquare(board) {
+function findRandomSquare(board) {
   let square;
-  for (let idx = 0; idx < WINNING_LINES.length; idx += 1) {
-    let line = WINNING_LINES[idx];
-    square = findAtRiskSquare(line, board, HUMAN_MARKER);
-    if (square) break;
-  }
+  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+  square = emptySquares(board)[randomIndex];
   return square;
 }
 
@@ -113,28 +110,23 @@ function boardFull(board) {
   return emptySquares(board).length === 0;
 }
 
-function detectWinner(board) {
+function detectWinner(board, marker, player) {
   for (let line = 0; line < WINNING_LINES.length; line += 1) {
     let [sq1, sq2, sq3] = WINNING_LINES[line];
     if (
-      board[sq1] === HUMAN_MARKER &&
-      board[sq2] === HUMAN_MARKER &&
-      board[sq3] === HUMAN_MARKER
+      board[sq1] === marker &&
+      board[sq2] === marker &&
+      board[sq3] === marker
     ) {
-      return 'Player';
-    } else if (
-      board[sq1] === COMPUTER_MARKER &&
-      board[sq2] === COMPUTER_MARKER &&
-      board[sq3] === COMPUTER_MARKER
-    ) {
-      return 'Computer';
+      return player;
     }
   }
   return null;
 }
 
 function someoneWon(board) {
-  return !!detectWinner(board);
+  return !!detectWinner(board, PLAYER_MARKER, PLAYERS[0]) ||
+    !!detectWinner(board, COMPUTER_MARKER, PLAYERS[1]);
 }
 
 function findAtRiskSquare(line, board, marker) {
@@ -165,12 +157,12 @@ function retrieveFirstPlayer() {
     answer = rlSync.question().toLowerCase();
   }
   let firstMove = answer[0] === 'y' ? '0' : '1';
-  return FIRST_MOVE[firstMove];
+  return PLAYERS[firstMove];
 }
 
 function retrieveAnswer() {
   let answer = rlSync.question().toLowerCase();
-  if (isInvalidAnswer(answer)) {
+  while (isInvalidAnswer(answer)) {
     prompt(MESSAGES['invalidChoice']);
     answer = rlSync.question().toLowerCase();
   }
@@ -182,7 +174,7 @@ function isInvalidAnswer(answer) {
 }
 
 function updateScore(board, scores) {
-  if (detectWinner(board) === 'Player') {
+  if (detectWinner(board, PLAYER_MARKER, PLAYERS[0]) === 'Player') {
     scores.player += 1;
     return scores;
   } else {
@@ -219,13 +211,15 @@ while (true) {
 
     if (someoneWon(board)) {
       scores = updateScore(board, scores);
-      prompt(`${detectWinner(board)} won!`);
+      winner = detectWinner(board, PLAYER_MARKER, PLAYERS[0]) ||
+        detectWinner(board, COMPUTER_MARKER, PLAYERS[1]);
+      prompt(`${winner} won!`);
     } else {
       prompt(MESSAGES['tie']);
     }
 
     if (scores.player === WINNING_MATCH || scores.computer === WINNING_MATCH) {
-      prompt(`${detectWinner(board)} has won the match!`);
+      prompt(`${winner} has won the match!`);
       break;
     }
 

@@ -1,7 +1,7 @@
 {
   "welcome": "Get ready to play Tic Tac Toe -- First to win 5 rounds wins the match!",
   "firstPlayer": "Would you like to make the first move? Type 'y' for yes, 'n' for no",
-  "invalidChoice": "That's not a valid choice. Please enter 'y' or 'n'.",
+  "invalidChoice": "I do not understand.  Please try again!",
   "tie": "It's a tie!",
   "continue": "Press any key to continue, Q to quit",
   "anotherMatch": "Play another match? (y or n)",
