@@ -1,0 +1,16 @@
+{
+  "welcome": "Welcome to Twenty-One! Best of 5 Rounds Wins the Match! \n=> Press any key to be dealt a hand.",
+  "stayOrHit": "Would you like to hit or stay? Type 's' to stay, or 'h' to hit",
+  "invalidAnswer": "I did not understand. Type 's' to stay, or 'h' to hit",
+  "busts": "You busted!",
+  "stayed": "You chose to stay!",
+  "dealerBusts": "Dealer busts!",
+  "tie": "It's a tie.",
+  "line": "----------------------------------------------",
+  "continue": "Press any key to continue, Q to quit",
+  "wonRound": "=> %s is the winner!",
+  "wonMatch": "=> %s has won the match!!!",
+  "playAgain": "Would you like to play another match? Type 'y' to continue, or 'n' to exit",
+  "invalidChoice": "I do not understand. Type 'y' to continue, or 'n' to exit",
+  "thankYou": "Thank you for playing Twenty-One!"
+}
