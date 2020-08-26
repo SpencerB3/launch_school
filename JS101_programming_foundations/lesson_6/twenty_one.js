@@ -1,21 +1,21 @@
-// the player and dealer were given the same first card -- how?
-// JSON
-// validations
-// fix aceAdd functiom
-
-
 const rlSync = require('readline-sync');
-const prompt = (message) => console.log(`=> ${message}`);
+const MESSAGES = require('./twenty_one_messages.json');
 
 const SUITS = ['Hearts', 'Clubs', 'Diamonds', 'Spades'];
 const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen',
   'King', 'Ace'];
+const BLACKJACK = 21;
+const WIN_MATCH = 5;
+let roundsWon;
+let winner;
+
+const prompt = (message) => console.log(`=> ${message}`);
 
 function initializeDeck() {
   let deck = [];
   SUITS.forEach(suit => {
     VALUES.forEach(value => {
-      deck.push([suit, value]);
+      deck.push({ value: value, suit: suit });
     });
   });
   return deck;
@@ -23,20 +23,40 @@ function initializeDeck() {
 
 function shuffle(array) {
   for (let index = array.length - 1; index > 0; index--) {
-    let otherIndex = Math.floor(Math.random() * (index + 1)); // 0 to index
-    [array[index], array[otherIndex]] = [array[otherIndex], array[index]]; // swap elements
+    let otherIndex = Math.floor(Math.random() * (index + 1));
+    [array[index], array[otherIndex]] = [array[otherIndex], array[index]];
   }
 }
 
 function dealHand(deck) {
   let hand = [];
-  hand.push(deck.shift());
-  hand.push(deck.shift());
+  hand.push(deck.shift(), deck.shift());
   return hand;
 }
 
-function busted(score) {
-  if (score > 21) {
+function displayRound(roundsWon, playerHand, dealerHand, playerScore) {
+  prompt(`Player Rounds Won: ${roundsWon.player} -- Dealer Rounds Won: ${roundsWon.dealer}`);
+  prompt(MESSAGES['line']);
+  prompt(`Player Hand: ${displayHand(playerHand)} - Score: ${playerScore}`);
+  prompt(`Dealer Hand: ${dealerHand[0].value} of ${playerHand[0].suit} and Mystery Card`);
+}
+
+function displayEndRound(playerHand, playerScore, dealerHand, dealerScore) {
+  prompt(`Player Hand: ${displayHand(playerHand)} - Score: ${playerScore}`);
+  prompt(`Dealer Hand: ${displayHand(dealerHand)} - Score: ${dealerScore}`);
+}
+
+function retrieveAnswer() {
+  let answer = rlSync.question().toLowerCase();
+  while (!['s', 'h'].includes(answer)) {
+    prompt(MESSAGES['invalidAnswer']);
+    answer = rlSync.question().toLowerCase();
+  }
+  return answer;
+}
+
+function isBusted(score) {
+  if (score > BLACKJACK) {
     return true;
   }
   return false;
@@ -44,25 +64,31 @@ function busted(score) {
 
 function calculateHand(hand) {
   let sum = 0;
+
   hand.forEach(card => {
-    if (['J', 'Q', 'K'].includes(card[1][0])) {
+    if (['Jack', 'Queen', 'King'].includes(card.value)) {
       sum += 10;
-    } else if (card[1] === 'Ace') {
-      sum += (addAce(sum));
+    } else if (card.value === 'Ace') {
+      sum += 11;
     } else {
-      sum += Number(card[1]);
+      sum += Number(card.value);
+    }
+  });
+  return verifyAce(sum, hand);
+}
+
+function verifyAce(sum, hand) {
+  hand.filter(card => card.value === 'Ace').forEach(_ => {
+    if (isBusted(sum)) {
+      sum -= 10;
     }
   });
   return sum;
 }
 
-function addAce(sum) {
-  return ((sum + 11) > 21) ? 1 : 11;
-}
-
 function displayHand(finalHand) {
   return joinAnd(finalHand.map(card => {
-    return `${card[1]} of ${card[0]}`;
+    return `${card.value} of ${card.suit}`;
   }));
 }
 
@@ -77,7 +103,11 @@ function joinAnd(array, delimiter = ",", word = 'and') {
 }
 
 function retrievieWinner(hand1, hand2) {
-  if (hand1 > hand2) {
+  if (hand1 > BLACKJACK) {
+    return 'Dealer';
+  } else if (hand2 > BLACKJACK) {
+    return 'Player';
+  } else if (hand1 > hand2) {
     return 'Player';
   } else if (hand2 > hand1) {
     return 'Dealer';
@@ -86,70 +116,110 @@ function retrievieWinner(hand1, hand2) {
   }
 }
 
-// --------- main code ----------
+function updateRoundsWon(roundsWon, winner) {
+  if (winner === 'Player') {
+    roundsWon.player += 1;
+  } else {
+    roundsWon.dealer += 1;
+  }
+  return roundsWon;
+}
+
+function retrievePlayAgain() {
+  let answer = rlSync.question().toLowerCase();
+  while (!['yes', 'y', 'n', 'no'].includes(answer)) {
+    prompt(MESSAGES['invalidChoice']);
+    answer = rlSync.question().toLowerCase();
+  }
+  return answer;
+}
+
+// --------- main program run ----------
 
 console.clear();
-prompt('Welcome to Twenty-One! Press any key to be dealt a hand.');
+prompt(MESSAGES['welcome']);
 rlSync.question();
 
 while (true) {
   console.clear();
-  let deck = initializeDeck();
-  shuffle(deck);
-
-  let playerHand = dealHand(deck);
-  let dealerHand = dealHand(deck);
-
-  prompt(`Player Hand: ${playerHand[0][1]} of ${playerHand[0][0]} and ` +
-    `${playerHand[1][1]} of ${playerHand[1][0]}`);
-
-  prompt(`Dealer Hand: ${dealerHand[0][1]} of ${playerHand[0][0]} and Mystery Card`);
+  roundsWon = { player: 0, dealer: 0 };
 
   while (true) {
-    prompt("Would you like to hit or stay? Type 's' to stay, " +
-      "or any other key to hit");
-    let answer = rlSync.question().toLowerCase(); // validate answer
+    let deck = initializeDeck();
+    shuffle(deck);
 
-    if (busted(calculateHand(playerHand)) || answer === 's') break;
-    console.clear();
-    playerHand.push(deck.shift());
-    prompt(`Player Hand: ${displayHand(playerHand)}`);
-    prompt(`Dealer Hand: ${dealerHand[0][1]} of ${playerHand[0][0]} and Mystery Card`);
-  }
+    let playerHand = dealHand(deck);
+    let dealerHand = dealHand(deck);
+    let playerScore = calculateHand(playerHand);
+    let dealerScore = calculateHand(dealerHand);
 
-  if (busted(calculateHand(playerHand))) {
-    prompt('You busted! =--> Dealer wins!  Would you like to play again?');
-  } else {
-    prompt('You chose to stay!');
-  }
+    displayRound(roundsWon, playerHand, dealerHand, playerScore);
 
-  while (true) {
-    if (busted(calculateHand(dealerHand)) || calculateHand(dealerHand) >= 17) {
+    while (true) {
+      prompt(MESSAGES['line']);
+      prompt(MESSAGES['stayOrHit']);
+      let answer = retrieveAnswer();
+
+      if (answer === 'h') {
+        console.clear();
+        playerHand.push(deck.shift());
+        playerScore += calculateHand([playerHand[playerHand.length - 1]]);
+        displayRound(roundsWon, playerHand, dealerHand, playerScore);
+      }
+
+      if (isBusted(playerScore) || answer === 's') break;
+    }
+
+    if (isBusted(playerScore)) {
+      console.clear();
+      prompt(MESSAGES['busts']);
+      prompt(MESSAGES['line']);
+    } else {
+      console.clear();
+      prompt(MESSAGES['stayed']);
+      prompt(MESSAGES['line']);
+    }
+
+    while (!isBusted(playerScore)) {
+      if (isBusted(dealerScore) || dealerScore >= 17) break;
+      dealerHand.push(deck.shift());
+      dealerScore += calculateHand([dealerHand[dealerHand.length - 1]]);
+    }
+
+    if (isBusted(dealerScore)) {
+      prompt(MESSAGES['dealerBusts']);
+      prompt(MESSAGES['line']);
+    }
+
+    winner = retrievieWinner(playerScore, dealerScore);
+
+    if (!winner) {
+      displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
+      prompt(MESSAGES['tie']);
+    } else {
+      displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
+      console.log(`${MESSAGES['wonRound']}`, winner);
+      roundsWon = updateRoundsWon(roundsWon, winner);
+    }
+
+    if (roundsWon.player === WIN_MATCH || roundsWon.dealer === WIN_MATCH) {
+      prompt(MESSAGES['line']);
+      console.log(`${MESSAGES['wonMatch']}`, winner);
       break;
     }
-    dealerHand.push(deck.shift());
+
+    prompt(MESSAGES['line']);
+    prompt(MESSAGES['continue']);
+    let anotherRound = rlSync.question().toLowerCase();
+    if (anotherRound[0] === 'q') break;
+    console.clear();
   }
 
-  let finalPlayerScore = calculateHand(playerHand);
-  let finalDealerScore = calculateHand(dealerHand);
-
-  if (busted(calculateHand(dealerHand))) {
-    prompt('Dealer busts! =--> Player wins!');
-  } else if (retrievieWinner(finalPlayerScore, finalDealerScore)) {
-    prompt(`${retrievieWinner(finalPlayerScore, finalDealerScore)} is the winner!`);
-  } else {
-    prompt("It's a tie.");
-  }
-
-  prompt(`Player Hand: ${displayHand(playerHand)} - Score: ${calculateHand(playerHand)}`);
-  prompt(`Dealer Hand: ${displayHand(dealerHand)} - Score: ${calculateHand(dealerHand)}`);
-
-  prompt("Would you like to play again? Type 'y' to continue, " +
-    "or any other key to exit");
-  let playAgain = rlSync.question(); // validate
+  prompt(MESSAGES['line']);
+  prompt(MESSAGES['playAgain']);
+  let playAgain = retrievePlayAgain();
   if (playAgain[0] !== 'y') break;
-  console.clear();
 }
 
 console.clear();
-prompt('Thank you for playing Twenty-One!');
+prompt(MESSAGES['thankYou']);
