@@ -56,10 +56,7 @@ function retrieveAnswer() {
 }
 
 function isBusted(score) {
-  if (score > BLACKJACK) {
-    return true;
-  }
-  return false;
+  return score > BLACKJACK;
 }
 
 function calculateHand(hand) {
@@ -126,11 +123,85 @@ function updateRoundsWon(roundsWon, winner) {
 }
 
 function retrievePlayAgain() {
+  prompt(MESSAGES['line']);
+  prompt(MESSAGES['playAgain']);
   let answer = rlSync.question().toLowerCase();
   while (!['yes', 'y', 'n', 'no'].includes(answer)) {
     prompt(MESSAGES['invalidChoice']);
     answer = rlSync.question().toLowerCase();
   }
+  return answer;
+}
+
+function playerTurn(playerHand, playerScore, roundsWon, dealerHand, deck) {
+  while (true) {
+    prompt(MESSAGES['line']);
+    prompt(MESSAGES['stayOrHit']);
+    let answer = retrieveAnswer();
+
+    if (answer === 'h') {
+      console.clear();
+      playerHand.push(deck.shift());
+      playerScore += calculateHand([playerHand[playerHand.length - 1]]);
+      displayRound(roundsWon, playerHand, dealerHand, playerScore);
+    }
+
+    if (isBusted(playerScore) || answer === 's') break;
+  }
+  return playerScore;
+}
+
+function dealerTurn(dealerScore, dealerHand, deck) {
+  do {
+    dealerHand.push(deck.shift());
+    dealerScore += calculateHand([dealerHand[dealerHand.length - 1]]);
+  } while (!isBusted(dealerScore) && (dealerScore < 17));
+  return dealerScore;
+}
+
+function displayPlayerBusted(playerScore) {
+  if (isBusted(playerScore)) {
+    console.clear();
+    prompt(MESSAGES['busts']);
+    prompt(MESSAGES['line']);
+  } else {
+    console.clear();
+    prompt(MESSAGES['stayed']);
+    prompt(MESSAGES['line']);
+  }
+}
+
+function displayDealerBusted(dealerScore) {
+  if (isBusted(dealerScore)) {
+    prompt(MESSAGES['dealerBusts']);
+    prompt(MESSAGES['line']);
+  }
+}
+
+function displayRoundResult(winner, playerHand, playerScore, dealerHand,
+  dealerScore) {
+  if (!winner) {
+    displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
+    prompt(MESSAGES['tie']);
+  } else {
+    displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
+    console.log(`${MESSAGES['wonRound']}`, winner);
+  }
+}
+
+function isMatchOver(winner, roundsWon) {
+  if (roundsWon.player === WIN_MATCH || roundsWon.dealer === WIN_MATCH) {
+    prompt(MESSAGES['line']);
+    console.log(`${MESSAGES['wonMatch']}`, winner);
+    return true;
+  }
+  return false;
+}
+
+function retrieveAnotherRound() {
+  prompt(MESSAGES['line']);
+  prompt(MESSAGES['continue']);
+  let answer = rlSync.question().toLowerCase();
   return answer;
 }
 
@@ -155,68 +226,29 @@ while (true) {
 
     displayRound(roundsWon, playerHand, dealerHand, playerScore);
 
-    while (true) {
-      prompt(MESSAGES['line']);
-      prompt(MESSAGES['stayOrHit']);
-      let answer = retrieveAnswer();
+    playerScore = playerTurn(playerHand, playerScore, roundsWon, dealerHand,
+      deck);
 
-      if (answer === 'h') {
-        console.clear();
-        playerHand.push(deck.shift());
-        playerScore += calculateHand([playerHand[playerHand.length - 1]]);
-        displayRound(roundsWon, playerHand, dealerHand, playerScore);
-      }
+    displayPlayerBusted(playerScore);
 
-      if (isBusted(playerScore) || answer === 's') break;
-    }
-
-    if (isBusted(playerScore)) {
-      console.clear();
-      prompt(MESSAGES['busts']);
-      prompt(MESSAGES['line']);
-    } else {
-      console.clear();
-      prompt(MESSAGES['stayed']);
-      prompt(MESSAGES['line']);
-    }
-
-    while (!isBusted(playerScore)) {
-      if (isBusted(dealerScore) || dealerScore >= 17) break;
-      dealerHand.push(deck.shift());
-      dealerScore += calculateHand([dealerHand[dealerHand.length - 1]]);
-    }
-
-    if (isBusted(dealerScore)) {
-      prompt(MESSAGES['dealerBusts']);
-      prompt(MESSAGES['line']);
+    if (!isBusted(playerScore)) {
+      dealerScore = dealerTurn(dealerScore, dealerHand, deck);
+      displayDealerBusted(dealerScore);
     }
 
     winner = retrievieWinner(playerScore, dealerScore);
 
-    if (!winner) {
-      displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
-      prompt(MESSAGES['tie']);
-    } else {
-      displayEndRound(playerHand, playerScore, dealerHand, dealerScore);
-      console.log(`${MESSAGES['wonRound']}`, winner);
-      roundsWon = updateRoundsWon(roundsWon, winner);
-    }
+    displayRoundResult(winner, playerHand, playerScore, dealerHand,
+      dealerScore);
 
-    if (roundsWon.player === WIN_MATCH || roundsWon.dealer === WIN_MATCH) {
-      prompt(MESSAGES['line']);
-      console.log(`${MESSAGES['wonMatch']}`, winner);
-      break;
-    }
+    roundsWon = updateRoundsWon(roundsWon, winner);
 
-    prompt(MESSAGES['line']);
-    prompt(MESSAGES['continue']);
-    let anotherRound = rlSync.question().toLowerCase();
+    if (isMatchOver(winner, roundsWon)) break;
+
+    let anotherRound = retrieveAnotherRound();
     if (anotherRound[0] === 'q') break;
-    console.clear();
   }
 
-  prompt(MESSAGES['line']);
-  prompt(MESSAGES['playAgain']);
   let playAgain = retrievePlayAgain();
   if (playAgain[0] !== 'y') break;
 }
