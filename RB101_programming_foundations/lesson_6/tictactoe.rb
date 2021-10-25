@@ -48,7 +48,7 @@ def place_piece!(brd, current)
   current == 'player' ? player_places_piece!(brd) : computer_places_piece!(brd)
 end
 
-# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+# rubocop: disable Metrics/AbcSize, Metrics/MethodLength
 def display_board(brd, player_score, computer_score)
   system 'clear'
   puts "You're a #{PLAYER_MARKER}.  Computer is #{COMPUTER_MARKER}."
@@ -67,7 +67,7 @@ def display_board(brd, player_score, computer_score)
   puts '     |     |'
   puts ''
 end
-# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+# rubocop: enable Metrics/AbcSize, Metrics/MethodLength
 
 def initialize_board
   new_board = {}
