@@ -12,4 +12,4 @@ end
 cat1 = Cat.new
 cat1.color
 
-# answer => Cat, Animal, Kernel, Object
+# answer => Cat, Animal, Object, Kernel, BasicObject
