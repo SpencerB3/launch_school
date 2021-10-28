@@ -5,3 +5,5 @@ node_modules/
 # ignore aslant configuration file
 
 .eslintrc.yml
+
+.rubocop.yml
