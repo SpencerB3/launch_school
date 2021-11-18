@@ -2,11 +2,65 @@
 
 # Include Card and Deck classes from the last two exercises.
 
+class Card
+  include Comparable
+  attr_reader :rank, :suit
+
+  VALUES = { 'Jack' => 11, 'Queen' => 12, 'King' => 13, 'Ace' => 14 }
+
+  def initialize(rank, suit)
+    @rank = rank
+    @suit = suit
+  end
+
+  def to_s
+    "#{rank} of #{suit}"
+  end
+
+  def value
+    VALUES.fetch(rank, rank)
+  end
+
+  def <=>(other)
+    value <=> other.value
+  end
+end
+
+class Deck
+  RANKS = ((2..10).to_a + %w(Jack Queen King Ace)).freeze
+  SUITS = %w(Hearts Clubs Diamonds Spades).freeze
+
+  def initialize
+    reset_deck
+  end
+
+  def reset_deck
+    @deck = RANKS.product(SUITS).map do |rank, suit|
+       Card.new(rank, suit)
+    end
+    @deck.shuffle!
+  end
+
+  def draw
+    reset_deck if @deck.empty?
+    @deck.pop
+  end
+end
+
 class PokerHand
-  def initialize(deck)
+  def initialize(cards)
+    @cards = []
+    @rank_count = Hash.new(0)
+    
+    5.times do
+      card = cards.draw
+      @cards << card
+      @rank_count[card.rank] += 1
+    end
   end
 
   def print
+    puts @cards
   end
 
   def evaluate
@@ -24,37 +78,55 @@ class PokerHand
     end
   end
 
+  def ==(other)
+    value == other.value
+  end
+
   private
 
-  def royal_flush?
-  end
-
-  def straight_flush?
-  end
-
-  def four_of_a_kind?
-  end
-
-  def full_house?
-  end
-
   def flush?
+    suit = @cards.first.suit
+    @cards.all? { |card| card.suit == suit }
   end
 
   def straight?
+    return false if @rank_count.any? { |_, count| count > 1 }
+
+    @cards.min.value == (@cards.max.value - 4)
+  end
+
+  def n_of_a_kind(number)
+    @rank_count.one? { |_, count| count == number }
+  end
+
+  def royal_flush?
+    straight_flush? && @cards.min.rank == 10
+  end
+
+  def straight_flush?
+    flush? && straight?
+  end
+
+  def four_of_a_kind?
+    n_of_a_kind(4)
+  end
+
+  def full_house?
+    n_of_a_kind(3) && n_of_a_kind(2)
   end
 
   def three_of_a_kind?
+    n_of_a_kind(3)
   end
 
   def two_pair?
+    @rank_count.select { |_, count| count == 2}.size == 2
   end
 
   def pair?
+    n_of_a_kind(2)
   end
 end
-
-# Testing your class:
 
 hand = PokerHand.new(Deck.new)
 hand.print
@@ -165,23 +237,3 @@ hand = PokerHand.new([
   Card.new(3,      'Diamonds')
 ])
 puts hand.evaluate == 'High card'
-
-# 5 of Clubs
-# 7 of Diamonds
-# Ace of Hearts
-# 7 of Clubs
-# 5 of Spades
-# Two pair
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
-# true
