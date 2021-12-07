@@ -1,3 +1,57 @@
+module Displayable
+  def welcome_display
+    clear
+    display_welcome_message
+    sleep(3)
+    clear
+  end
+
+  def display_welcome_message
+    puts "Welcome #{human.name} to Rock, Paper, Scissors, Lizard, Spock!"
+  end
+
+  def display_goodbye_message
+    clear
+    puts "Thank you for playing Rock, Paper, Scissors, Lizard, Spock - Goodbye!"
+  end
+
+  def display_rules_and_score
+    display_games_to_win_match
+    display_score
+  end
+
+  def display_games_to_win_match
+    puts "First player to win #{RPSGame::WINS_FOR_MATCH} rounds is crowned the winner!"
+  end
+
+  def display_score
+    puts "#{human.name}: #{human.score} -- #{computer.name}: #{computer.score}"
+  end
+
+  def display_moves
+    puts "#{human.name} chose: #{human.move}"
+    puts "#{computer.name} chose: #{computer.move}"
+  end
+
+  def display_winner
+    if human_won?
+      puts "#{human.name} won!"
+      human.score += 1
+    elsif computer_won?
+      puts "#{computer.name} won!"
+      computer.score += 1
+    else
+      puts "It's a tie!"
+    end
+  end
+
+  def display_history?
+    puts "Type 'h' to display history, or type any other key to continue"
+    print_history if gets.chomp.downcase == 'h'
+    clear
+  end
+end
+
 class Player
   VALID_CHOICES = %w(r p s l v).freeze
   COMPUTER_NAMES = %w(R2D2 Chappie Hal).freeze
@@ -12,14 +66,14 @@ class Player
 end
 
 class Human < Player
-  CHOOSE_HAND = <<-MSG
-Please enter one of the following five choices:
-->  'r' for rock
-->  'p' for paper
-->  's' for scissors
-->  'l' for lizard
-->  'v' for spock
-MSG
+  CHOOSE_HAND = <<~MSG
+    Please enter one of the following five choices:
+    ->  'r' for rock
+    ->  'p' for paper
+    ->  's' for scissors
+    ->  'l' for lizard
+    ->  'v' for spock
+  MSG
 
   def choose
     choice = nil
@@ -73,10 +127,6 @@ class Move
     wins_against.include?(other_move.value)
   end
 
-  def <(other_move)
-    other_move.wins_against.include?(value)
-  end
-
   def to_s
     @value
   end
@@ -120,6 +170,7 @@ end
 # --------- Orchestration engine ----------------
 
 class RPSGame
+  include Displayable
   WINS_FOR_MATCH = 3
 
   rock = Rock.new
@@ -145,7 +196,7 @@ class RPSGame
       players_choose
       store_move
       game_display
-      break unless play_again? # perhaps continue?
+      break unless play_again?
       clear
     end
 
@@ -153,35 +204,6 @@ class RPSGame
   end
 
   private
-
-  def welcome_display
-    clear
-    display_welcome_message
-    sleep(3)
-    clear
-  end
-
-  def display_welcome_message
-    puts "Welcome #{human.name} to Rock, Paper, Scissors, Lizard, Spock!"
-  end
-
-  def display_goodbye_message
-    clear
-    puts "Thank you for playing Rock, Paper, Scissors, Lizard, Spock - Goodbye!"
-  end
-
-  def display_rules_and_score
-    display_games_to_win_match
-    display_score
-  end
-
-  def display_games_to_win_match
-    puts "First player to win #{WINS_FOR_MATCH} rounds is crowned the winner!"
-  end
-
-  def display_score
-    puts "#{human.name}: #{human.score} -- #{computer.name}: #{computer.score}"
-  end
 
   def players_choose
     human.choose
@@ -196,23 +218,6 @@ class RPSGame
     display_history?
   end
 
-  def display_moves
-    puts "#{human.name} chose: #{human.move}"
-    puts "#{computer.name} chose: #{computer.move}"
-  end
-
-  def display_winner
-    if human_won?
-      puts "#{human.name} won!"
-      human.score += 1
-    elsif computer_won?
-      puts "#{computer.name} won!"
-      computer.score += 1
-    else
-      puts "It's a tie!"
-    end
-  end
-
   def human_won?
     human.move > computer.move
   end
@@ -224,12 +229,6 @@ class RPSGame
   def store_move
     human.history << human.move
     computer.history << computer.move
-  end
-
-  def display_history?
-    puts "Type 'h' to display history, or type any other key to continue"
-    print_history if gets.chomp.downcase == 'h'
-    clear
   end
 
   def print_history
