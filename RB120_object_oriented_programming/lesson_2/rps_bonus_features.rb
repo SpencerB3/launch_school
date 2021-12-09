@@ -20,10 +20,6 @@ module Displayable
     display_score
   end
 
-  def display_games_to_win_match
-    puts "First player to win #{RPSGame::WINS_FOR_MATCH} rounds is crowned the winner!"
-  end
-
   def display_score
     puts "#{human.name}: #{human.score} -- #{computer.name}: #{computer.score}"
   end
@@ -31,18 +27,6 @@ module Displayable
   def display_moves
     puts "#{human.name} chose: #{human.move}"
     puts "#{computer.name} chose: #{computer.move}"
-  end
-
-  def display_winner
-    if human_won?
-      puts "#{human.name} won!"
-      human.score += 1
-    elsif computer_won?
-      puts "#{computer.name} won!"
-      computer.score += 1
-    else
-      puts "It's a tie!"
-    end
   end
 
   def display_history?
@@ -253,6 +237,22 @@ class RPSGame
     computer.history.each_with_index do |move, idx|
       puts "Round #{idx + 1}: #{move}"
     end
+  end
+
+  def display_winner
+    if human_won?
+      puts "#{human.name} won!"
+      human.score += 1
+    elsif computer_won?
+      puts "#{computer.name} won!"
+      computer.score += 1
+    else
+      puts "It's a tie!"
+    end
+  end
+
+  def display_games_to_win_match
+    puts "First player to win #{RPSGame::WINS_FOR_MATCH} rounds is crowned the winner!"
   end
 
   def someone_won?
