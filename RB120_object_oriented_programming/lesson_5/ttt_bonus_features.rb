@@ -119,19 +119,20 @@ class Board
     square
   end
 
-  def find_optimal_square(line, marker)
-    if @squares.values_at(*line).collect(&:marker).count(marker) == 2
-      return @squares.select { |k, v| line.include?(k) && v.marker == ' ' }.keys.first
-    end
-    nil
-  end
-
   private
 
   def three_identical_markers?(squares)
     markers = squares.select(&:marked?).collect(&:marker)
     return false if markers.size != 3
     markers.min == markers.max
+  end
+
+  def find_optimal_square(line, marker)
+    if @squares.values_at(*line).collect(&:marker).count(marker) == 2
+      return @squares.select { |k, v| line.include?(k) && v.marker == ' ' }
+                     .keys.first
+    end
+    nil
   end
 end
 
@@ -158,11 +159,9 @@ class Square
 end
 
 class Player
-  attr_accessor :score, :name, :marker
-  attr_reader :marker
+  attr_accessor :name, :marker
 
   def initialize
-    @score = 0
     set_name
   end
 end
@@ -170,7 +169,7 @@ end
 class Human < Player
   include Displayable
   include Validation
-  
+
   def set_name
     clear
     n = nil
@@ -178,7 +177,7 @@ class Human < Player
       print "Please enter your name: "
       n = gets.chomp.strip
       break unless n.empty? || Computer::COMPUTER_NAMES.map(&:upcase)
-                               .include?(n.upcase)
+                                                       .include?(n.upcase)
       invalid_name(n)
     end
     self.name = n
@@ -196,7 +195,7 @@ class Human < Player
     choice = nil
     loop do
       puts "Please choose a single character marker."
-      puts "Your marker must be one character long and cannot be " + 
+      puts "Your marker must be one character long and cannot be " \
            "'#{Computer::COMPUTER_MARKER}'"
       choice = gets.chomp.strip
       break if valid_marker?(choice)
@@ -207,6 +206,8 @@ class Human < Player
     @marker = choice
   end
 
+  private
+
   def valid_marker?(choice)
     choice.size == 1 && choice != 'O'
   end
@@ -215,7 +216,7 @@ class Human < Player
     if marker == 'O'
       puts "#{marker} is already taken - let's try again..."
     else
-    invalid_entry
+      invalid_entry
     end
   end
 end
@@ -258,7 +259,8 @@ class Score
   end
 
   def display
-    "SCORE #{human_name}: #{score[human_name]}  #{computer_name}: #{score[computer_name]}"
+    "SCORE #{human_name}: #{score[human_name]}  #{computer_name}: " \
+    "#{score[computer_name]}"
   end
 
   def update(player)
@@ -278,8 +280,6 @@ class TTTGame
     @board = Board.new
     @human = Human.new
     @computer = Computer.new
-    @human_marker = human.marker
-    @computer_marker = computer.marker
     @score = Score.new(human.name, computer.name)
   end
 
@@ -313,11 +313,7 @@ class TTTGame
   end
 
   def first_to_move(choice)
-    if choice.start_with?('y')
-      @current_marker = human.marker
-    else
-      @current_marker = computer.marker
-    end
+    @current_marker = choice.start_with?('y') ? human.marker : computer.marker
   end
 
   def player_move
@@ -349,7 +345,7 @@ class TTTGame
     [human.name, computer.name].each do |player|
       puts "#{player} has won the match!!!" if score.find_winner(player)
     end
-    
+
     reset_scores
   end
 
@@ -360,7 +356,8 @@ class TTTGame
   def display_board
     puts "First Player to Win #{Score::WINS_FOR_MATCH} Rounds Wins the Match"
     puts score.display
-    puts "#{human.name} is an '#{human.marker}'. #{computer.name} is an '#{computer.marker}''."
+    puts "#{human.name} is an '#{human.marker}'. #{computer.name} is an " \
+         "'#{computer.marker}''."
     puts ""
     board.draw
     puts ""
@@ -384,11 +381,19 @@ class TTTGame
   end
 
   def computer_moves
-    square = board.computer_optimal_square(computer.marker)
-    square = board.computer_optimal_square(human.marker) if !square
+    square = computer_offense_move
+    square = computer_defense_move(square)
     square = CENTER_SPACE if board.space_five_empty?
     square = board.unmarked_keys.to_a.sample if !square
     board[square] = computer.marker
+  end
+
+  def computer_offense_move
+    board.computer_optimal_square(computer.marker)
+  end
+
+  def computer_defense_move(square)
+    board.computer_optimal_square(human.marker) if !square
   end
 
   def display_result
