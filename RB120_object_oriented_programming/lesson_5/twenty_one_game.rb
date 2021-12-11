@@ -1,9 +1,9 @@
 require 'pry'
 
 module Hand
-  def total(cards)
+  def total
     sum = 0
-    values = cards.map { |card| card.value }
+    values = cards.map(&:value)
 
     values.each do |value|
       sum += value
@@ -17,82 +17,98 @@ module Hand
   end
 
   def busted?
+    total > Game::WINNING_NUM
+  end
 
+  def show_hand
+    puts "** #{name}'s Hand **"
+    cards.each do |card|
+      puts card
+    end
+  end
+
+  def add_card(new_card)
+    cards << new_card
   end
 end
 
 class Participant
-  # super class 
-end
-
-class Player
   include Hand
-  attr_accessor :cards
+  attr_accessor :name, :cards
+
   def initialize
     @cards = []
+    set_name
   end
-
-  def hit
-  end
-
-  def stay
-
-  end
-
-
-  def <<(card)
-    cards << card
-  end
-
 end
 
-class Dealer
-  include Hand
-  attr_accessor :cards
-  
-  def initialize
-    @cards = []
+class Player < Participant
+  def set_name
+    name = ''
+    loop do
+      print "Please enter your name: "
+      name = gets.chomp.strip
+      break unless name.empty? || Dealer::DEALER_NAMES.map(&:downcase)
+                                                      .include?(name.downcase)
+      invalid_name(name)
+    end
+
+    self.name = name
   end
 
-  def hit
-
-
+  def show_flop
+    show_hand
   end
 
-  def stay
+  def invalid_name(name)
+    if name.empty?
+      puts "Please enter a value - let's try again..."
+    elsif Dealer::DEALER_NAMES.map(&:downcase).include?(name.downcase)
+      puts "Looks like #{name} is already taken - let's try again..."
+    end                                                
+  end
+end
 
+class Dealer < Participant
+  DEALER_NAMES = ['Tom', 'Jerry', 'Bugs_Bunny', 'Sylvester_the_Cat']
+
+  def set_name
+    self.name = DEALER_NAMES.sample
   end
 
-  def <<(card)
-    cards << card
+  def show_flop
+    puts "** #{name}'s Hand **"
+    puts cards.first.to_s
+    puts "???"
   end
-
 end
 
 class Deck
-  RANKS = ((2..10).to_a + %w(Jack Queen King Ace)).freeze
-  SUITS = %w(Hearts Clubs Diamonds Spades).freeze
+  attr_accessor :cards
 
   def initialize
-    reset
-  end
-
-  def reset
-    @deck = RANKS.product(SUITS).map do |rank, suit|
-      Card.new(rank, suit)
+    @cards = []
+    Card::RANKS.each do |rank|
+      Card::SUITS.each do |suit|
+        @cards << Card.new(rank, suit)
+      end
     end
 
-    @deck.shuffle!
+    scramble!
   end
 
-  def draw
-    reset if @deck.empty?
-    @deck.pop
+  def scramble!
+    cards.shuffle!
   end
 
+  def deal_one
+    @cards.pop
+  end
 end
 
 class Card
+  RANKS = ((2..10).to_a + %w(Jack Queen King Ace)).freeze
+  SUITS = %w(Hearts Clubs Diamonds Spades).freeze
   include Comparable
   attr_reader :rank, :suit
 
@@ -121,26 +137,53 @@ class Game
   attr_accessor :deck, :player, :dealer
 
   def initialize
-    @deck = Deck.new 
+    clear
+    @deck = Deck.new
     @player = Player.new
     @dealer = Dealer.new
   end
 
   def start
-    clear
     display_welcome_message
-    deal_cards
-    display_initial_cards
-    player_turn
-    dealer_turn
-    display_result
-    detect_winner
-    display_winner
+    sleep(2)
+
+    loop do
+      deal_cards
+      show_flop
+
+      player_turn
+      if player.busted?
+        show_busted
+        if play_again?
+          reset
+          next
+        else
+          break
+        end
+      end
+
+      dealer_turn
+      if dealer.busted?
+        show_busted
+        if play_again?
+          reset
+          next
+        else
+          break
+        end
+      end
+
+      show_cards
+      show_result
+      play_again? ? reset : break
+    end
+
     display_goodbye_message
   end
 
   def display_welcome_message
-    puts "Welcome to Twenty-One!"
+    clear
+    puts "Welcome #{player.name} to Twenty-One!"
   end
 
   def display_goodbye_message
@@ -149,97 +192,107 @@ class Game
 
   def deal_cards
     2.times do
-      player.cards << deck.draw
-      dealer.cards << deck.draw
+      player.add_card(deck.deal_one)
+      dealer.add_card(deck.deal_one)
     end
   end
 
-  def display_initial_cards
-    puts "Dealer has #{dealer.cards.first} and ???"
-    puts "You have #{player.cards.first} and #{player.cards.last}."
+  def show_flop
+    player.show_flop
+    dealer.show_flop
+  end
+
+  def play_again?
+    answer = nil
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w(y n yes no).include?(answer)
+      puts "Invalid input - must use 'y' or 'n'. Let's try again."
+    end
+
+    answer == 'y' || answer == 'yes'
+  end
+
+  def show_busted
+    if player.busted?
+      puts "Looks like #{player.name} has busted! #{dealer.name} has won!"
+    elsif dealer.busted
+      puts "Looks like #{dealer.name} has busted! #{computer.name} has won!"
+    end
   end
 
   def player_turn
-    answer = nil
+    puts "It's #{player.name}'s turn..."
+
     loop do
-      puts "Would you like to hit or stay? Type 'h' or 's'"
-      answer = gets.chomp.downcase
-    
+      puts "Would you like to (h)it or (s)tay?"
+      answer = nil
+
       loop do
+        answer = gets.chomp.downcase.strip
         break if %w(h s).include?(answer)
-        puts "Invalid answer.  Let's try again..."
-        answer = gets.chomp.downcase
+        puts "Invalid answer; must be 'h' or 's'.  Let's try again..."
       end
 
-      break if answer == 's'
-
-      puts "You chose to hit!"
-      player.cards << deck.draw
-      puts "Your cards are now: #{player.cards.map(&:to_s).join(', ')}"
-      puts "Your total is #{player.total(player.cards)}"
-      break if busted?(player)
+      if answer == 's'
+        puts "#{player.name} stays!"
+        break
+      elsif player.busted?
+        break
+      else
+        player.add_card(deck.deal_one)
+        puts "#{player.name} hits!"
+        player.show_hand
+        break if player.busted?
+      end
     end
-
-    # player_turn_result
   end
-
-  def busted?(participant)
-    participant.total(participant.cards) > 21
-  end
-
-  # def display_player_cards
-  #         binding.pry
-    
-  # end
 
   def dealer_turn
+    print_dealers_turn
+
     loop do
-      dealer.cards << deck.draw
-      break if dealer.total(dealer.cards) >= 17
+      if dealer.total >= 17 || !dealer.busted?
+        puts "Dealer stays!"
+        break
+      elsif dealer.busted?
+        break
+      else
+        puts "#{dealer.name} hits!"
+        dealer.add_card(deck.deal_one)
+      end
     end
   end
 
-  def display_result
-    puts "Your score is #{player.total(player.cards)}."
-    puts "Dealer's score is #{dealer.total(dealer.cards)}."
+  def print_dealers_turn
+    puts "It's #{dealer.name}'s turn..."
   end
 
-  def detect_winner
-    if player.total(player.cards) > 21
-      :player_busted
-    elsif dealer.total(dealer.cards) > 21
-      :dealer_busted
-    elsif player.total(player.cards) > dealer.total(dealer.cards)
-      :player_won
-    elsif dealer.total(dealer.cards) > player.total(player.cards)
-      :dealer_won
+  def show_cards
+    player.show_hand
+    dealer.show_hand
+  end
+
+  def show_result
+    if player.total > dealer.total
+      puts "#{player.name} has won!"
+    elsif dealer.total > player.total
+      puts "#{dealer.name} has won!"
     else
-      :tie
-    end
-  end
-
-  def display_winner
-    result = detect_winner
-
-    case result
-    when :player_busted
-      puts "You busted! Dealer wins!"
-    when :dealer_busted
-      puts "Dealer busted!  You win!"
-    when :player
-      puts "You win!"
-    when :dealer
-      puts "Dealer wins!"
-    when :tie
       puts "It's a tie!"
     end
+  end
+
+  def reset
+    self.deck = Deck.new
+    player.cards = []
+    dealer.cards = []
   end
 
   def clear
     system 'clear'
   end
-
 end
 
 Game.new.start
-
