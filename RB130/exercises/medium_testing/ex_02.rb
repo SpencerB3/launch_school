@@ -1,0 +1,22 @@
+require 'minitest/autorun'
+require "minitest/reporters"
+Minitest::Reporters.use!
+
+require_relative 'cash_register'
+require_relative 'transaction'
+
+class CashRegisterTest < MiniTest::Test
+  def setup
+    @register = CashRegister.new(1000)
+    @transaction = Transaction.new(80)
+  end
+
+  def test_accept_money
+    @transaction.amount_paid = 80
+    
+    previous_amount = @register.total_money
+    current_amount = @register.accept_money(@transaction)
+
+    assert_equal previous_amount + 80, current_amount
+  end
+end
