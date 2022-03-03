@@ -15,23 +15,23 @@ class RomanNumeral
     "V" => 5,
     "IV" => 4,
     "I" => 1
-  }
+  }.to_a.sort_by { |_, value| value }.reverse
 
   def initialize(number)
     @number = number
   end
 
   def to_roman
-    roman_version = ''
+    result = ''
     to_convert = number
 
     ROMAN_NUMERALS.each do |key, value|
       multiplier, remainder = to_convert.divmod(value)
-      if multiplier > 0
-        roman_version += (key * multiplier)
-      end
+      next unless multiplier > 0
+      result += (key * multiplier)
+
       to_convert = remainder
     end
-    roman_version
+    result
   end
 end
