@@ -16,7 +16,7 @@ class Anagram
   private
 
   def sorted_word(word)
-    word.downcase.split('').sort.join
+    word.downcase.chars.sort.join
   end
 
   def anagram?(word1, word2)
