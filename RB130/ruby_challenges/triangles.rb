@@ -1,29 +1,24 @@
 class Triangle
-  def initialize(side1, side2, side3)
-    @triangle = [side1, side2, side3]
-    validate_triangle            
+  def initialize(s1, s2, s3)
+    @sides = [s1, s2, s3].sort
+    raise ArgumentError  if invalid? 
   end
 
   def kind
-    if @triangle.all? { |side| @triangle[0] == side }
-      'equilateral'
-    elsif @triangle[0] == @triangle[1] || @triangle[0] == @triangle[2] || 
-          @triangle[1] == @triangle[2]
-      'isosceles'
-    else
-      'scalene'
-    end
+    return 'equilateral' if @sides.uniq.size == 1
+    return 'isosceles' if @sides[0] == @sides[1] || @sides[1] == @sides[2]
+    'scalene'
   end
 
   private
 
-  def validate_triangle
-    raise ArgumentError if @triangle.any? { |side| side <= 0 } || !valid_sides?
+  def invalid?
+     @sides.min <= 0 || unequal_sides
   end
 
-  def valid_sides?
-    @triangle[0] + @triangle[1] > @triangle[2] &&
-    @triangle[0] + @triangle[2] > @triangle[1] &&
-    @triangle[1] + @triangle[2] > @triangle[0]
+  def unequal_sides
+    @sides[0] + @sides[1] <= @sides[2] || 
+    @sides[1] + @sides[2] <= @sides[0] || 
+    @sides[2] + @sides[0] <= @sides[1]
   end
 end
