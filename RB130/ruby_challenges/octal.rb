@@ -6,18 +6,21 @@ class Octal
   end
 
   def to_decimal
-    return 0 unless valid?
-
-    decimal = 0
-    number.to_i.digits.each_with_index do |num, idx|
-      decimal += (num * (8**idx))
+    return 0 if invalid_octal?
+    
+    decimal_num = 0
+    reversed_num = number.to_i.digits
+    
+    reversed_num.each_with_index do |n, idx|
+      decimal_num += (n * (8**idx))
     end
-    decimal
+
+    decimal_num
   end
 
   private
 
-  def valid?
-    number.chars.all? { |char| char.match?(/[0-7]/) }
+  def invalid_octal?
+    number =~ /[a-z89]/i
   end
 end
