@@ -1,5 +1,5 @@
 class Scrabble
-  attr_reader  :word
+  attr_reader :word
   
   POINTS = {
     'AEIOULNRST'=> 1,
@@ -12,20 +12,18 @@ class Scrabble
   }
 
   def initialize(word)
-    @word = word ? word : ''
+    @word = word.nil? ? "" : word
   end
 
   def score
     letters = word.upcase.gsub(/[^A-Z]/, '')
-    points = 0
-
+    score = 0
     letters.each_char do |char|
       POINTS.each do |key, value|
-        points += value if key.include?(char)
+        score += value if key.include?(char)
       end
     end
-
-    points
+    score
   end
 
   def self.score(word)
