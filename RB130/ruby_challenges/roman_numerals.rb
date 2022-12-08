@@ -1,37 +1,70 @@
 class RomanNumeral
-  attr_accessor :number
-
-  ROMAN_NUMERALS = {
-    "M" => 1000,
-    "CM" => 900,
-    "D" => 500,
-    "CD" => 400,
-    "C" => 100,
-    "XC" => 90,
-    "L" => 50,
-    "XL" => 40,
-    "X" => 10,
-    "IX" => 9,
-    "V" => 5,
-    "IV" => 4,
-    "I" => 1
-  }.to_a.sort_by { |_, value| value }.reverse
-
-  def initialize(number)
-    @number = number
+  def initialize(num)
+    @decimal_num = num
   end
 
   def to_roman
-    result = ''
-    to_convert = number
+    roman_numeral = ''
+    places = @decimal_num.to_s.size
 
-    ROMAN_NUMERALS.each do |key, value|
-      multiplier, remainder = to_convert.divmod(value)
-      next unless multiplier > 0
-      result += (key * multiplier)
-
-      to_convert = remainder
+    @decimal_num.digits.reverse.each do |num|
+      roman_numeral += find_roman_numeral(num, places) unless num.zero?
+      places -= 1
     end
-    result
+
+    roman_numeral
+  end
+
+  def find_roman_numeral(num, place)
+    case place
+    when 4
+      thousand_place_numeral(num)
+    when 3
+      hundred_place_numeral(num)
+    when 2
+      ten_place_numeral(num)
+    else
+      one_place_numeral(num)
+    end
+  end
+
+  def thousand_place_numeral(num)
+    'M' * num
+  end
+
+  def hundred_place_numeral(num)
+    case num
+    when (1..3) then 'C' * num
+    when 4      then 'CD'
+    when 5      then 'D'
+    when 6      then 'DC'
+    when 7      then 'DCC'
+    when 8      then 'DCCC'
+    when 9      then 'CM'
+    end
+  end
+
+  def ten_place_numeral(num)
+    case num
+    when (1..3) then 'X' * num
+    when 4      then 'XL'
+    when 5      then 'L'
+    when 6      then 'LX'
+    when 7      then 'LXX'
+    when 8      then 'LXXX'
+    when 9      then 'XC'
+    end
+  end
+
+  def one_place_numeral(num)
+    case num
+    when (1..3) then 'I' * num
+    when 4      then 'IV'
+    when 5      then 'V'
+    when 6      then 'VI'
+    when 7      then 'VII'
+    when 8      then 'VIII'
+    when 9      then 'IX'
+    end
   end
 end
