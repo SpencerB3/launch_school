@@ -1,25 +1,19 @@
 class Anagram
-  def initialize(word)
-    @word = word
+  def initialize(anagram)
+    @ana = anagram.downcase
   end
 
-  def match(array)
-    matches = []
-    array.each do |string|
-      next if @word.downcase == string.downcase
-      matches << string if anagram?(@word, string)
+  def match(words)
+    words.select do |word|
+      word = word.downcase
+      next if @ana == word
+      anagram?(word)
     end
-
-    matches
   end
 
   private
 
-  def sorted_word(word)
-    word.downcase.chars.sort.join
-  end
-
-  def anagram?(word1, word2)
-    sorted_word(word1) == sorted_word(word2)
+  def anagram?(word)
+    @ana.split('').sort.join == word.split('').sort.join
   end
 end
