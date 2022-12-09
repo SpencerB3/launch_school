@@ -1,30 +1,22 @@
   class Series
-  attr_reader :number_string
-
-  def initialize(str)
-    @number_string = str
+  attr_reader :num_array
+  
+  def initialize(num_string)
+    @num_array = num_string.chars.map(&:to_i)
   end
 
-  def slices(parts)
-    raise ArgumentError.new if parts > number_string.size
+  def slices(length)
+    raise ArgumentError if length > num_array.size
+    # result = []
 
-    result = []
-    counter = 0
+    num_array.each_cons(length).to_a
+    
+    # @num_array.each_index do |idx|
+    #   sub_array = num_array[idx...(idx + total_nums)]
+    #   result << sub_array unless sub_array.size < total_nums
 
-    while counter + parts <= number_string.size
-      result << cut_slice(parts, counter)
-      counter += 1
-    end
+    # end
 
-    result
-  end
-
-  private
-
-  def cut_slice(parts, idx)
-    number[idx, parts].chars.map(&:to_i)
+    # result
   end
 end
-
-l = Series.new('01234')
-l.slices(1)
