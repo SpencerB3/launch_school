@@ -11,19 +11,11 @@ class Clock
   end
 
   def self.at(hr, min = 0)
-    Clock.new(hr, min)
+    new(hr, min)
   end
 
   def to_s
     format("%02d:%02d", @hours, @minutes)
-  end
-
-  def find_hour(hr)
-    hr % HOURS_PER_DAY
-  end
-
-  def find_minutes(min)
-    min % MINUTES_PER_HOUR
   end
 
   def +(num)
@@ -46,5 +38,15 @@ class Clock
 
   def ==(other)
     to_s == other.to_s
+  end
+
+  private
+
+  def find_hour(hr)
+    hr % HOURS_PER_DAY
+  end
+
+  def find_minutes(min)
+    min % MINUTES_PER_HOUR
   end
 end
