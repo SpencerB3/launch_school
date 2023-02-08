@@ -1,6 +1,3 @@
-require 'minitest/autorun'
-require_relative 'clock'
-
 class Clock
   HOURS_PER_DAY = 24
   MINUTES_PER_HOUR = 60
